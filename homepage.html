@@ -90,28 +90,59 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .password-protect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .password-input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
     </style>
+    <script>
+        function checkPassword() {
+            var password = document.getElementById("password").value;
+            if (password === "testing") {
+                document.getElementById("main-content").style.display = "block";
+                document.getElementById("password-form").style.display = "none";
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
+        }
+    </script>
 </head>
 <body>
-    <div class="header">
-        <div class="branding">
-            <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
-            <h1>Benjamen Miller</h1>
-        </div>
-        <div class="dropdown">
-            <button>Projects</button>
-            <div class="dropdown-content">
-                <a href="Project1.html">Project 1</a>
-                <a href="Project2.html">Project 2</a>
-                <a href="Project3.html">Project 3</a>
-                <a href="Project4.html">Project 4</a>
-                <a href="Project5.html">Project 5</a>
-            </div>
-        </div>
+    <div id="password-form" class="password-protect">
+        <h2>Enter Password</h2>
+        <input type="password" id="password" class="password-input" placeholder="Password">
+        <button onclick="checkPassword()">Submit</button>
     </div>
     
-    <div class="footer">
-        <p>Contact: <a href="mailto:benjamen@umich.edu">benjamen@umich.edu</a> | <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+    <div id="main-content" style="display: none;">
+        <div class="header">
+            <div class="branding">
+                <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
+                <h1>Benjamen Miller</h1>
+            </div>
+            <div class="dropdown">
+                <button>Projects</button>
+                <div class="dropdown-content">
+                    <a href="Project1.html">Project 1</a>
+                    <a href="Project2.html">Project 2</a>
+                    <a href="Project3.html">Project 3</a>
+                    <a href="Project4.html">Project 4</a>
+                    <a href="Project5.html">Project 5</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Contact: <a href="mailto:benjamen@umich.edu">benjamen@umich.edu</a> | <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+        </div>
     </div>
 </body>
 </html>
