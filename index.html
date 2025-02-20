@@ -3,43 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal website of Benjamen Miller, an Aerospace Engineering student at the University of Michigan College of Engineering, showcasing projects and professional experiences.">
     <title>Coming Soon - Benjamen Miller</title>
     <style>
+        :root {
+            --primary-color: #00274C; /* Michigan Blue */
+            --secondary-color: #FFCB05; /* Michigan Maize */
+            --background-color: #f8f9fa;
+            --text-light: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+        
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            font-family: 'Arial', sans-serif;
             text-align: center;
             margin: 0;
         }
         .container {
-            background: white;
-            padding: 40px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            background: var(--primary-color);
+            padding: 50px;
+            box-shadow: 0px 6px 15px var(--shadow-color);
+            border-radius: 12px;
+            color: var(--text-light);
+            max-width: 500px;
+        }
+        .logo {
+            max-width: 300px;
+            margin-bottom: 20px;
         }
         h1 {
-            color: #333;
+            color: var(--secondary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
         p {
-            color: #666;
+            color: var(--text-light);
+            font-size: 1.2em;
+            line-height: 1.5;
         }
         .footer {
             margin-top: 20px;
-            font-size: 14px;
-            color: #999;
+            font-size: 1em;
+        }
+        a {
+            color: var(--secondary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="figures/UniversityofMichiganLogo.svg" alt="University of Michigan College of Engineering Logo" class="logo">
         <h1>Coming Soon</h1>
-        <p>Hello! My name is Benjamen Miller, and I’m an Aerospace Engineering student at the University of Michigan.</p>
-        <p>This website will showcase my projects and experiences. Stay tuned!</p>
-        <p class="footer">For inquiries, connect with me on <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank">LinkedIn</a>.</p>
+        <p>Welcome! My name is Benjamen Miller, and I am an Aerospace Engineering student at the University of Michigan College of Engineering.</p>
+        <p>This website will serve as a portfolio of my projects and professional experiences. Check back soon for updates!</p>
+        <p class="footer">For professional inquiries, connect with me on <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
     </div>
 </body>
 </html>
