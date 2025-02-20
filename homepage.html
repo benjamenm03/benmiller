@@ -29,11 +29,17 @@
             box-shadow: 0px 4px 10px var(--shadow-color);
         }
         .header img {
-            height: 50px;
+            height: 60px;
+            margin-right: 20px;
+        }
+        .header .branding {
+            display: flex;
+            align-items: center;
         }
         .header h1 {
             color: var(--secondary-color);
             margin: 0;
+            font-size: 24px;
         }
         .dropdown {
             position: relative;
@@ -88,8 +94,10 @@
 </head>
 <body>
     <div class="header">
-        <h1>Benjamen Miller</h1>
-        <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
+        <div class="branding">
+            <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
+            <h1>Benjamen Miller</h1>
+        </div>
         <div class="dropdown">
             <button>Projects</button>
             <div class="dropdown-content">
