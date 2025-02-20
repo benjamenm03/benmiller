@@ -55,6 +55,77 @@
             background: var(--text-light);
             color: var(--primary-color);
         }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 50px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+        }
+        .branding {
+            display: flex;
+            align-items: center;
+        }
+        .branding img {
+            height: 60px;
+            margin-right: 20px;
+        }
+        .branding h1 {
+            color: var(--secondary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown button {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--text-light);
+            min-width: 160px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: var(--primary-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--background-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            margin-top: 20px;
+        }
+        .footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         function checkPassword(event) {
