@@ -19,33 +19,30 @@
             font-family: 'Arial', sans-serif;
             background-color: var(--background-color);
         }
-        .header {
+        .password-protect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
             background: var(--primary-color);
             color: var(--text-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 50px;
-            box-shadow: 0px 4px 10px var(--shadow-color);
+            text-align: center;
+            padding: 20px;
         }
-        .header img {
-            height: 60px;
-            margin-right: 20px;
-        }
-        .header .branding {
-            display: flex;
-            align-items: center;
-        }
-        .header h1 {
+        .password-protect h2 {
             color: var(--secondary-color);
-            margin: 0;
-            font-size: 24px;
+            margin-bottom: 20px;
         }
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .password-input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            text-align: center;
         }
-        .dropdown button {
+        .password-button {
             background: var(--secondary-color);
             color: var(--primary-color);
             padding: 10px 20px;
@@ -54,63 +51,21 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--text-light);
-            min-width: 160px;
-            box-shadow: 0px 4px 10px var(--shadow-color);
-            border-radius: 5px;
-            z-index: 1;
-        }
-        .dropdown-content a {
+        .password-button:hover {
+            background: var(--text-light);
             color: var(--primary-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: var(--background-color);
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: var(--primary-color);
-            color: var(--text-light);
-            margin-top: 20px;
-        }
-        .footer a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .password-protect {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-        .password-input {
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
         }
     </style>
     <script>
-        function checkPassword() {
-            var password = document.getElementById("password").value;
-            if (password === "testing") {
-                document.getElementById("main-content").style.display = "block";
-                document.getElementById("password-form").style.display = "none";
-            } else {
-                alert("Incorrect password. Please try again.");
+        function checkPassword(event) {
+            if (event.key === "Enter" || event.type === "click") {
+                var password = document.getElementById("password").value;
+                if (password === "testing") {
+                    document.getElementById("main-content").style.display = "block";
+                    document.getElementById("password-form").style.display = "none";
+                } else {
+                    alert("Incorrect password. Please try again.");
+                }
             }
         }
     </script>
@@ -118,8 +73,8 @@
 <body>
     <div id="password-form" class="password-protect">
         <h2>Enter Password</h2>
-        <input type="password" id="password" class="password-input" placeholder="Password">
-        <button onclick="checkPassword()">Submit</button>
+        <input type="password" id="password" class="password-input" placeholder="Password" onkeypress="checkPassword(event)">
+        <button class="password-button" onclick="checkPassword(event)">Submit</button>
     </div>
     
     <div id="main-content" style="display: none;">
