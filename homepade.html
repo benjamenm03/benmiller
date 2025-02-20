@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal website of Benjamen Miller, an Aerospace Engineering student at the University of Michigan College of Engineering, showcasing projects and professional experiences.">
+    <title>Benjamen Miller - Aerospace Engineering</title>
+    <style>
+        :root {
+            --primary-color: #00274C; /* Michigan Blue */
+            --secondary-color: #FFCB05; /* Michigan Maize */
+            --background-color: #f8f9fa;
+            --text-light: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+        }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 50px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+        }
+        .header img {
+            height: 50px;
+        }
+        .header h1 {
+            color: var(--secondary-color);
+            margin: 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown button {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--text-light);
+            min-width: 160px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: var(--primary-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--background-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            margin-top: 20px;
+        }
+        .footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Benjamen Miller</h1>
+        <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
+        <div class="dropdown">
+            <button>Projects</button>
+            <div class="dropdown-content">
+                <a href="Project1.html">Project 1</a>
+                <a href="Project2.html">Project 2</a>
+                <a href="Project3.html">Project 3</a>
+                <a href="Project4.html">Project 4</a>
+                <a href="Project5.html">Project 5</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Contact: <a href="mailto:benjamen@umich.edu">benjamen@umich.edu</a> | Phone: (269) 635-3418 | <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+    </div>
+</body>
+</html>
