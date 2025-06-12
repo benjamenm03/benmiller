@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Personal website of Benjamen Miller, an Aerospace Engineering student at the University of Michigan College of Engineering, showcasing projects and professional experiences.">
-    <title>Coming Soon - Benjamen Miller</title>
+    <title>Benjamen Miller - Aerospace Engineering</title>
     <style>
         :root {
             --primary-color: #00274C; /* Michigan Blue */
@@ -15,63 +15,192 @@
         }
         
         body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+        }
+        .password-protect {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: var(--background-color);
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 0;
-        }
-        .container {
+            flex-direction: column;
             background: var(--primary-color);
-            padding: 50px;
-            box-shadow: 0px 6px 15px var(--shadow-color);
-            border-radius: 12px;
             color: var(--text-light);
-            max-width: 600px;
+            text-align: center;
+            padding: 20px;
         }
-        .logo {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-            background-color: var(--text-light);
-            padding: 10px;
-            border-radius: 8px;
-        }
-        h1 {
+        .password-protect h2 {
             color: var(--secondary-color);
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
-        p {
+        .password-input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            text-align: center;
+        }
+        .password-button {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .password-button:hover {
+            background: var(--text-light);
+            color: var(--primary-color);
+        }
+        .header {
+            background: var(--primary-color);
             color: var(--text-light);
-            font-size: 1.2em;
-            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 50px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+            transition: padding 0.3s ease;
+        }
+        .header.shrink {
+            padding: 10px 50px;
+        }
+        .header.shrink .branding img {
+            height: 40px;
+        }
+        .header.shrink .branding h1 {
+            font-size: 20px;
+        }
+        .branding {
+            display: flex;
+            align-items: center;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .branding img {
+            height: 60px;
+            margin-right: 20px;
+        }
+        .branding h1 {
+            color: var(--secondary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown button {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--text-light);
+            min-width: 160px;
+            box-shadow: 0px 4px 10px var(--shadow-color);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: var(--primary-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--background-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
         .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--primary-color);
+            color: var(--text-light);
             margin-top: 20px;
-            font-size: 1em;
         }
-        a {
+        .footer a {
             color: var(--secondary-color);
-            font-weight: bold;
             text-decoration: none;
+            font-weight: bold;
         }
-        a:hover {
+        .footer a:hover {
             text-decoration: underline;
         }
     </style>
+    <script>
+        function checkPassword(event) {
+            if (event.key === "Enter" || event.type === "click") {
+                var password = document.getElementById("password").value;
+                if (password === "testing") {
+                    document.getElementById("main-content").style.display = "block";
+                    document.getElementById("password-form").style.display = "none";
+                } else {
+                    alert("Incorrect password. Please try again.");
+                }
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            var header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+    </script>
 </head>
 <body>
-    <div class="container">
-        <img src="figures/UniversityofMichiganLogo.svg" alt="University of Michigan College of Engineering Logo" class="logo">
-        <h1>Coming Soon</h1>
-        <p>Welcome! My name is Benjamen Miller, and I am an Aerospace Engineering student at the University of Michigan College of Engineering.</p>
-        <p>This website will serve as a portfolio of my projects and professional experiences. Check back soon for updates!</p>
-        <p class="footer">For professional inquiries, connect with me on <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
-        <p class="footer">Link to <a href = "https://www.benmiller.us/homepage.html" target="_blank" rel="noopener noreferrer">homepage</a></p>
+    <div id="password-form" class="password-protect">
+        <h2>Enter Password</h2>
+        <input type="password" id="password" class="password-input" placeholder="Password" onkeypress="checkPassword(event)">
+        <button class="password-button" onclick="checkPassword(event)">Submit</button>
+    </div>
+    
+    <div id="main-content" style="display: none;">
+        <div class="header">
+            <div class="branding">
+                <img src="figures/UMichBlock.svg" alt="University of Michigan Logo">
+                <h1>Benjamen D. Miller</h1>
+            </div>
+            <div class="nav-links">
+                <div class="dropdown">
+                    <button onclick="window.location.href='resume.pdf'">PDF Resume</button>
+                </div>
+                <div class="dropdown">
+                    <button onclick="window.location.href='https://aerial-estate.us'">Aerial Estate LLC</button>
+                </div>
+                <div class="dropdown">
+                    <button>Projects</button>
+                    <div class="dropdown-content">
+                        <a href="Project1.html">Project 1</a>
+                        <a href="Project2.html">Project 2</a>
+                        <a href="Project3.html">Project 3</a>
+                        <a href="Project4.html">Project 4</a>
+                        <a href="Project5.html">Project 5</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Contact: <a href="mailto:benjamen@umich.edu">benjamen@umich.edu</a> | Phone: (269) 635-3418 | <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+        </div>
     </div>
 </body>
 </html>
