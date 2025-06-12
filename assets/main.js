@@ -1,29 +1,21 @@
 function initNavigation() {
     var header = document.querySelector('.header');
 
-    // Create a sentinel element to observe scroll position
-    var sentinel = document.createElement('div');
-    sentinel.id = 'nav-sentinel';
-    document.body.insertBefore(sentinel, header);
-
-    var observer = new IntersectionObserver(function(entries) {
+    function handleScroll() {
         if (window.innerWidth <= 600) {
             header.classList.remove('shrink');
             return;
         }
-        if (entries[0].isIntersecting) {
-            header.classList.remove('shrink');
-        } else {
+        if (window.pageYOffset > 50) {
             header.classList.add('shrink');
-        }
-    }, { rootMargin: '-50px 0px 0px 0px', threshold: 0 });
-    observer.observe(sentinel);
-
-    window.addEventListener('resize', function() {
-        if (window.innerWidth <= 600) {
+        } else {
             header.classList.remove('shrink');
         }
-    });
+    }
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
 
     document.querySelectorAll('.dropdown > button').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
