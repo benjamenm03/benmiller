@@ -60,6 +60,7 @@ function createPlots(data) {
     const motor2 = [];
     const motor3 = [];
     const motor4 = [];
+    const speed = [];
 
     data.forEach(row => {
         const t = parseFloat(row['Clock:offsetTime']);
@@ -78,40 +79,61 @@ function createPlots(data) {
         motor2.push(parseFloat(row['Motor:Speed:LFront[rpm]']));
         motor3.push(parseFloat(row['Motor:Speed:LBack[rpm]']));
         motor4.push(parseFloat(row['Motor:Speed:RBack[rpm]']));
+        speed.push(Math.sqrt(Math.pow(velN[velN.length-1],2) + Math.pow(velE[velE.length-1],2)));
     });
 
     const plotsDiv = document.getElementById('plots');
     plotsDiv.innerHTML = '';
 
-    // Trajectory plot
+    function addPlot(container, traces, layout, cls) {
+        const div = document.createElement('div');
+        div.className = cls;
+        Plotly.newPlot(div, traces, layout);
+        container.appendChild(div);
+    }
+
+    const row1 = document.createElement('div');
+    row1.className = 'plot-row';
     const pathTrace = { x: lon, y: lat, mode: 'lines', type: 'scatter', name: 'Path' };
-    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [pathTrace], {title: 'Longitude vs Latitude', xaxis: {title: 'Longitude'}, yaxis: {title: 'Latitude'}});
-
-    // Altitude over time
+    addPlot(row1, [pathTrace], {title: 'Longitude vs Latitude', xaxis:{title:'Longitude'}, yaxis:{title:'Latitude'}}, 'plot-half');
     const altTrace = { x: time, y: alt, mode: 'lines', type: 'scatter', name: 'Altitude' };
-    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [altTrace], {title: 'Relative Height over Time', xaxis: {title: 'Time (s)'}, yaxis: {title: 'Height (m)'}});
+    addPlot(row1, [altTrace], {title: 'Relative Height over Time', xaxis:{title:'Time (s)'}, yaxis:{title:'Height (m)'}}, 'plot-half');
+    plotsDiv.appendChild(row1);
 
-    // Orientation
-    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
+    const row2 = document.createElement('div');
+    row2.className = 'plot-row';
+    addPlot(row2, [
         {x: time, y: roll, mode:'lines', name:'Roll'},
         {x: time, y: pitch, mode:'lines', name:'Pitch'},
         {x: time, y: yaw, mode:'lines', name:'Yaw'}
-    ], {title: 'Orientation Angles', xaxis:{title:'Time (s)'}, yaxis:{title:'Degrees'}});
-
-    // Velocities
-    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
-        {x: time, y: velN, mode:'lines', name:'Vel N'},
-        {x: time, y: velE, mode:'lines', name:'Vel E'},
-        {x: time, y: velD, mode:'lines', name:'Vel D'}
-    ], {title:'Velocity Components', xaxis:{title:'Time (s)'}, yaxis:{title:'Velocity (m/s)'}});
-
-    // Motor Speeds
-    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
+    ], {title:'Orientation Angles', xaxis:{title:'Time (s)'}, yaxis:{title:'Degrees'}}, 'plot-half');
+    addPlot(row2, [
         {x: time, y: motor1, mode:'lines', name:'RFront'},
         {x: time, y: motor2, mode:'lines', name:'LFront'},
         {x: time, y: motor3, mode:'lines', name:'LBack'},
         {x: time, y: motor4, mode:'lines', name:'RBack'}
-    ], {title:'Motor Speeds', xaxis:{title:'Time (s)'}, yaxis:{title:'RPM'}});
+    ], {title:'Motor Speeds', xaxis:{title:'Time (s)'}, yaxis:{title:'RPM'}}, 'plot-half');
+    plotsDiv.appendChild(row2);
+
+    const row3 = document.createElement('div');
+    row3.className = 'plot-row';
+    addPlot(row3, [
+        {x: time, y: velN, mode:'lines', name:'Vel N'},
+        {x: time, y: velE, mode:'lines', name:'Vel E'},
+        {x: time, y: velD, mode:'lines', name:'Vel D'}
+    ], {title:'Velocity Components', xaxis:{title:'Time (s)'}, yaxis:{title:'Velocity (m/s)'}}, 'plot-full');
+    plotsDiv.appendChild(row3);
+
+    const row4 = document.createElement('div');
+    row4.className = 'plot-row';
+    addPlot(row4, [{x: time, y: lat, mode:'lines', name:'Latitude'}], {title:'GPS Latitude vs Time', xaxis:{title:'Time (s)'}, yaxis:{title:'Latitude'}}, 'plot-half');
+    addPlot(row4, [{x: time, y: lon, mode:'lines', name:'Longitude'}], {title:'GPS Longitude vs Time', xaxis:{title:'Time (s)'}, yaxis:{title:'Longitude'}}, 'plot-half');
+    plotsDiv.appendChild(row4);
+
+    const row5 = document.createElement('div');
+    row5.className = 'plot-row';
+    addPlot(row5, [{x: time, y: speed, mode:'lines', name:'Speed'}], {title:'Ground Speed', xaxis:{title:'Time (s)'}, yaxis:{title:'m/s'}}, 'plot-full');
+    plotsDiv.appendChild(row5);
 }
 
 document.getElementById('csvFile').addEventListener('change', function(evt){
