@@ -90,7 +90,8 @@ function createPlots(data) {
     function addPlot(traces, layout) {
         const div = document.createElement('div');
         div.className = 'plot';
-        Plotly.newPlot(div, traces, layout);
+        // Make plots responsive so they fill the width of the container
+        Plotly.newPlot(div, traces, layout, {responsive: true});
         plotsDiv.appendChild(div);
     }
 
