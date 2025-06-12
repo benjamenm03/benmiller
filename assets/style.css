@@ -5,6 +5,7 @@
     --text-light: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.2);
 }
+
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -166,5 +167,14 @@ body {
         position: static;
         box-shadow: none;
         width: 100%;
+    }
+}
+
+/* Desktop-specific navigation adjustments */
+@media (min-width: 601px) {
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 }
