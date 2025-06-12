@@ -99,3 +99,27 @@ body {
 .footer a:hover {
     text-decoration: underline;
 }
+
+/* Resource link styling for the NASA CYGNSS page */
+.resource-links {
+    list-style: none;
+    padding-left: 0;
+}
+
+.resource-links li {
+    margin: 10px 0;
+}
+
+.resource-links a {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.resource-links a:hover {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
