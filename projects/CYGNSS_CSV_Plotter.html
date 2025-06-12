@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYGNSS CSV Data Visualizer</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/main.js"></script>
+    <!-- Plotly and PapaParse for CSV parsing and plotting -->
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.2/plotly.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+</head>
+<body>
+<div class="header">
+    <div class="branding">
+        <a href="../index.html"><img src="../assets/images/UMichBlock.svg" alt="University of Michigan Logo"></a>
+        <h1>Benjamen D. Miller</h1>
+    </div>
+    <div class="nav-links">
+        <div class="dropdown"><button onclick="window.location.href='../index.html'">Home</button></div>
+        <div class="dropdown"><button onclick="window.location.href='../assets/resume.pdf'">PDF Resume</button></div>
+        <div class="dropdown"><button onclick="window.location.href='cygnss.html'">NASA CYGNSS</button></div>
+        <div class="dropdown">
+            <button>Projects</button>
+            <div class="dropdown-content">
+                <a href="cygnss.html">NASA CYGNSS</a>
+                <a href="aerial-estate.html">Aerial Estate LLC</a>
+                <a href="aether.html">AETHER Space Weather Model</a>
+                <a href="engr100-950.html">ENGR 100-950</a>
+                <a href="engr100-980.html">ENGR 100-980</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <h2>CYGNSS CSV Data Visualizer</h2>
+    <p>Select a CYGNSS telemetry CSV file to generate plots. This file should have the same format as produced by the DAT conversion tool.</p>
+    <input type="file" id="csvFile" accept=".csv">
+    <div id="plots"></div>
+</div>
+
+<div class="footer">
+    <p>Contact: <a href="mailto:benjamen@umich.edu">benjamen@umich.edu</a> | <a href="https://www.linkedin.com/in/benjamen-miller-233012292" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+</div>
+
+<script>
+function createPlots(data) {
+    const time = [];
+    const lat = [];
+    const lon = [];
+    const alt = [];
+    const roll = [];
+    const pitch = [];
+    const yaw = [];
+    const velN = [];
+    const velE = [];
+    const velD = [];
+    const motor1 = [];
+    const motor2 = [];
+    const motor3 = [];
+    const motor4 = [];
+
+    data.forEach(row => {
+        const t = parseFloat(row['Clock:offsetTime']);
+        if (isNaN(t)) return;
+        time.push(t);
+        lat.push(parseFloat(row['IMU_ATTI(0):Latitude[degrees [-180;180]]']));
+        lon.push(parseFloat(row['IMU_ATTI(0):Longitude[degrees [-180;180]]']));
+        alt.push(parseFloat(row['IMU_ATTI(0):relativeHeight:C[meters]']));
+        roll.push(parseFloat(row['IMU_ATTI(0):roll:C[degrees [-180;180]]']));
+        pitch.push(parseFloat(row['IMU_ATTI(0):pitch:C[degrees [-180;180]]']));
+        yaw.push(parseFloat(row['IMU_ATTI(0):yaw:C[degrees [-180;180]]']));
+        velN.push(parseFloat(row['IMU_ATTI(0):velN[meters/Sec]']));
+        velE.push(parseFloat(row['IMU_ATTI(0):velE[meters/Sec]']));
+        velD.push(parseFloat(row['IMU_ATTI(0):velD[meters/Sec]']));
+        motor1.push(parseFloat(row['Motor:Speed:RFront[rpm]']));
+        motor2.push(parseFloat(row['Motor:Speed:LFront[rpm]']));
+        motor3.push(parseFloat(row['Motor:Speed:LBack[rpm]']));
+        motor4.push(parseFloat(row['Motor:Speed:RBack[rpm]']));
+    });
+
+    const plotsDiv = document.getElementById('plots');
+    plotsDiv.innerHTML = '';
+
+    // Trajectory plot
+    const pathTrace = { x: lon, y: lat, mode: 'lines', type: 'scatter', name: 'Path' };
+    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [pathTrace], {title: 'Longitude vs Latitude', xaxis: {title: 'Longitude'}, yaxis: {title: 'Latitude'}});
+
+    // Altitude over time
+    const altTrace = { x: time, y: alt, mode: 'lines', type: 'scatter', name: 'Altitude' };
+    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [altTrace], {title: 'Relative Height over Time', xaxis: {title: 'Time (s)'}, yaxis: {title: 'Height (m)'}});
+
+    // Orientation
+    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
+        {x: time, y: roll, mode:'lines', name:'Roll'},
+        {x: time, y: pitch, mode:'lines', name:'Pitch'},
+        {x: time, y: yaw, mode:'lines', name:'Yaw'}
+    ], {title: 'Orientation Angles', xaxis:{title:'Time (s)'}, yaxis:{title:'Degrees'}});
+
+    // Velocities
+    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
+        {x: time, y: velN, mode:'lines', name:'Vel N'},
+        {x: time, y: velE, mode:'lines', name:'Vel E'},
+        {x: time, y: velD, mode:'lines', name:'Vel D'}
+    ], {title:'Velocity Components', xaxis:{title:'Time (s)'}, yaxis:{title:'Velocity (m/s)'}});
+
+    // Motor Speeds
+    Plotly.newPlot(plotsDiv.appendChild(document.createElement('div')), [
+        {x: time, y: motor1, mode:'lines', name:'RFront'},
+        {x: time, y: motor2, mode:'lines', name:'LFront'},
+        {x: time, y: motor3, mode:'lines', name:'LBack'},
+        {x: time, y: motor4, mode:'lines', name:'RBack'}
+    ], {title:'Motor Speeds', xaxis:{title:'Time (s)'}, yaxis:{title:'RPM'}});
+}
+
+document.getElementById('csvFile').addEventListener('change', function(evt){
+    const file = evt.target.files[0];
+    if (!file) return;
+    Papa.parse(file, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: function(results){
+            createPlots(results.data);
+        }
+    });
+});
+</script>
+</body>
+</html>
