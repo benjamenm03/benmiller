@@ -1,10 +1,22 @@
 function initNavigation() {
     var header = document.querySelector('.header');
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            header.classList.add('shrink');
+        if (window.innerWidth > 600) {
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
         } else {
             header.classList.remove('shrink');
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 600) {
+            header.classList.remove('shrink');
+        } else if (window.scrollY > 50) {
+            header.classList.add('shrink');
         }
     });
 
