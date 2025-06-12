@@ -188,5 +188,5 @@ body {
 /* Plot layout */
 #plots .plot {
     width: 100%;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 }
