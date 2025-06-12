@@ -1,21 +1,37 @@
 function initNavigation() {
     var header = document.querySelector('.header');
 
-    function handleScroll() {
+    var lastKnownScrollY = 0;
+    var ticking = false;
+
+    function update() {
+        ticking = false;
         if (window.innerWidth <= 600) {
             header.classList.remove('shrink');
             return;
         }
-        if (window.pageYOffset > 50) {
+        if (lastKnownScrollY > 50) {
             header.classList.add('shrink');
         } else {
             header.classList.remove('shrink');
         }
     }
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
+    function requestTick() {
+        if (!ticking) {
+            window.requestAnimationFrame(update);
+            ticking = true;
+        }
+    }
+
+    function onScroll() {
+        lastKnownScrollY = window.pageYOffset;
+        requestTick();
+    }
+
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
 
     document.querySelectorAll('.dropdown > button').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
