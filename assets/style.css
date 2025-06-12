@@ -184,3 +184,19 @@ body {
         z-index: 1000;
     }
 }
+
+/* Plot layout */
+#plots .plot-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+#plots .plot-half {
+    flex: 1 1 calc(50% - 20px);
+}
+
+#plots .plot-full {
+    flex: 1 1 100%;
+}
