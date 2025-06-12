@@ -106,13 +106,6 @@ body {
     text-decoration: underline;
 }
 
-/* Sentinel used for navbar shrink detection */
-#nav-sentinel {
-    position: absolute;
-    top: 0;
-    width: 1px;
-    height: 1px;
-}
 
 /* Resource link styling for the NASA CYGNSS page */
 .resource-cards {
