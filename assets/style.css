@@ -38,6 +38,9 @@ body {
     align-items: center;
     gap: 10px;
 }
+.mobile-menu {
+    display: none;
+}
 .branding img {
     height: 60px;
     margin-right: 20px;
@@ -147,9 +150,11 @@ body {
     }
 
     .nav-links {
+        display: none;
+    }
+
+    .mobile-menu {
         width: 100%;
-        flex-direction: column;
-        gap: 5px;
         margin-top: 10px;
     }
 
