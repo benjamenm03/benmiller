@@ -190,3 +190,24 @@ body {
     width: 100%;
     margin: 0 auto 20px;
 }
+
+/* Soil Moisture Network layout */
+.node-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.node-column {
+    flex: 1 1 300px;
+}
+
+.node-column h3 {
+    margin-top: 0;
+}
+
+.node-column iframe {
+    max-width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
