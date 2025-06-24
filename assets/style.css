@@ -207,6 +207,7 @@ body {
 }
 
 .node-column iframe {
+    width: 100%;
     max-width: 100%;
     display: block;
     margin-bottom: 15px;
