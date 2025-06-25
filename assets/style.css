@@ -212,3 +212,16 @@ body {
     display: block;
     margin-bottom: 15px;
 }
+
+.node-control {
+    margin-bottom: 10px;
+}
+
+.node-select {
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.node-control p {
+    margin: 5px 0 0;
+}
