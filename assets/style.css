@@ -195,7 +195,7 @@ body {
 .node-columns {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 5px;
 }
 
 .node-column {
