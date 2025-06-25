@@ -199,7 +199,8 @@ body {
 }
 
 .node-column {
-    flex: 1 1 300px;
+    flex: 1 1 450px;
+    min-width: 450px;
 }
 
 .node-column h3 {
