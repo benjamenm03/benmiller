@@ -6,6 +6,7 @@
     <title>Soil Moisture Network</title>
     <link rel="stylesheet" href="../assets/style.css">
     <script src="../assets/main.js"></script>
+    <script src="../assets/download.js"></script>
 </head>
 <body>
     <div class="header">
@@ -60,6 +61,23 @@
                 <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.mathworks.com/channels/2996911/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&xaxis=Date&yaxis=Temperature+%28C%29"></iframe>
                 <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.mathworks.com/channels/2996911/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Battery+Voltage&type=line&xaxis=Date&yaxis=Volts"></iframe>
             </div>
+        </section>
+        <section id="data-download" class="download-form">
+            <h3>Download Node Data</h3>
+            <form id="download-form">
+                <label for="node-select">Node:</label>
+                <select id="node-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <label for="start">Start:</label>
+                <input type="datetime-local" id="start" required>
+                <label for="end">End:</label>
+                <input type="datetime-local" id="end" required>
+                <button type="submit">Download CSV</button>
+            </form>
         </section>
     </div>
 
