@@ -67,10 +67,20 @@
             <form id="download-form">
                 <label for="node-select">Node:</label>
                 <select id="node-select">
+                    <option value="all">All Nodes</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
+                </select>
+                <label for="timezone-select">Timezone:</label>
+                <select id="timezone-select">
+                    <option value="local">Local</option>
+                    <option value="UTC">UTC</option>
+                    <option value="-05:00">UTC-05:00</option>
+                    <option value="-06:00">UTC-06:00</option>
+                    <option value="-07:00">UTC-07:00</option>
+                    <option value="-08:00">UTC-08:00</option>
                 </select>
                 <label for="start">Start:</label>
                 <input type="datetime-local" id="start" required>
