@@ -32,6 +32,30 @@
 
     <div class="content">
         <h2>Soil Moisture Network</h2>
+        <section id="data-download" class="download-form">
+            <h3>Download Node Data</h3>
+            <form id="download-form">
+                <label for="node-select">Node:</label>
+                <select id="node-select">
+                    <option value="all">All Nodes</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <label for="timezone-select">Timezone:</label>
+                <select id="timezone-select">
+                    <option value="local">Local</option>
+                    <option value="UTC">UTC</option>
+                </select>
+                <label for="start">Start:</label>
+                <input type="datetime-local" id="start" required>
+                <label for="end">End:</label>
+                <input type="datetime-local" id="end" required>
+                <button type="submit">Download CSV</button>
+            </form>
+            <p><em>Note: The timezone selection only affects how your start and end times are interpreted. All downloaded data uses UTC timestamps.</em></p>
+        </section>
         <section class="node-columns">
             <div class="node-column">
                 <h3><a href="https://thingspeak.mathworks.com/channels/2996904" target="_blank" rel="noopener noreferrer">Node&nbsp;1</a></h3>
@@ -61,33 +85,6 @@
                 <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.mathworks.com/channels/2996911/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&xaxis=Date&yaxis=Temperature+%28C%29"></iframe>
                 <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.mathworks.com/channels/2996911/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Battery+Voltage&type=line&xaxis=Date&yaxis=Volts"></iframe>
             </div>
-        </section>
-        <section id="data-download" class="download-form">
-            <h3>Download Node Data</h3>
-            <form id="download-form">
-                <label for="node-select">Node:</label>
-                <select id="node-select">
-                    <option value="all">All Nodes</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-                <label for="timezone-select">Timezone:</label>
-                <select id="timezone-select">
-                    <option value="local">Local</option>
-                    <option value="UTC">UTC</option>
-                    <option value="-05:00">UTC-05:00</option>
-                    <option value="-06:00">UTC-06:00</option>
-                    <option value="-07:00">UTC-07:00</option>
-                    <option value="-08:00">UTC-08:00</option>
-                </select>
-                <label for="start">Start:</label>
-                <input type="datetime-local" id="start" required>
-                <label for="end">End:</label>
-                <input type="datetime-local" id="end" required>
-                <button type="submit">Download CSV</button>
-            </form>
         </section>
     </div>
 
