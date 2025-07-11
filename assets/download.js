@@ -36,11 +36,11 @@ function parseCsv(text, node) {
         var h = original[i];
         if (h === 'field1') continue; // drop empty field
         if (h === 'field2') {
-            headers.push('node' + node + '_soil_moisture');
+            headers.push('node' + node + '_SMRaw');
         } else if (h === 'field3') {
-            headers.push('node' + node + '_soil_temperature');
+            headers.push('node' + node + '_TempC');
         } else if (h === 'field4') {
-            headers.push('node' + node + '_battery_voltage');
+            headers.push('node' + node + '_BVolts');
         } else {
             headers.push(h);
         }
