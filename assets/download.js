@@ -24,19 +24,50 @@ function fetchCsv(node, start, end) {
     return fetch(url).then(function(resp) { return resp.text(); });
 }
 
-function parseCsv(text) {
+function parseCsv(text, node) {
     var lines = text.trim().split(/\r?\n/);
-    var headers = lines[0].split(',');
+    if (lines.length === 0) return { headers: [], rows: {} };
+
+    var original = lines[0].split(',');
+    var headers = [];
+    var indices = [];
+
+    for (var i = 0; i < original.length; i++) {
+        var h = original[i];
+        if (h === 'field1') continue; // drop empty field
+        if (h === 'field2') {
+            headers.push('node' + node + '_soil_moisture');
+        } else if (h === 'field3') {
+            headers.push('node' + node + '_soil_temperature');
+        } else if (h === 'field4') {
+            headers.push('node' + node + '_battery_voltage');
+        } else {
+            headers.push(h);
+        }
+        indices.push(i);
+    }
+
     var rows = {};
-    for (var i = 1; i < lines.length; i++) {
-        var parts = lines[i].split(',');
+    for (var r = 1; r < lines.length; r++) {
+        var parts = lines[r].split(',');
         var row = {};
         for (var j = 0; j < headers.length; j++) {
-            row[headers[j]] = parts[j];
+            var idx = indices[j];
+            row[headers[j]] = parts[idx];
         }
         rows[row.created_at] = row;
     }
     return { headers: headers, rows: rows };
+}
+
+function csvFromParsed(parsed) {
+    var lines = [parsed.headers.join(',')];
+    Object.keys(parsed.rows).forEach(function(ts) {
+        var row = parsed.rows[ts];
+        var parts = parsed.headers.map(function(h) { return row[h]; });
+        lines.push(parts.join(','));
+    });
+    return lines.join('\n');
 }
 
 function combineCsv(results) {
@@ -50,7 +81,7 @@ function combineCsv(results) {
     results.forEach(function(res) {
         res.data.headers.forEach(function(h) {
             if (h === 'created_at' || h === 'entry_id') return;
-            header.push('node' + res.node + '_' + h);
+            header.push(h);
         });
     });
 
@@ -96,7 +127,7 @@ function initDownloadForm() {
             var nodes = Object.keys(NODE_INFO);
             Promise.all(nodes.map(function(n) {
                 return fetchCsv(n, start, end).then(function(csv) {
-                    return { node: n, data: parseCsv(csv) };
+                    return { node: n, data: parseCsv(csv, n) };
                 });
             })).then(function(results) {
                 var combined = combineCsv(results);
@@ -107,7 +138,8 @@ function initDownloadForm() {
         } else if (NODE_INFO[node]) {
             fetchCsv(node, start, end)
                 .then(function(csv) {
-                    download(csv, `node${node}_data.csv`);
+                    var parsed = parseCsv(csv, node);
+                    download(csvFromParsed(parsed), `node${node}_data.csv`);
                 })
                 .catch(function(err) {
                     console.error('Download failed:', err);
