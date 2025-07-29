@@ -41,6 +41,10 @@ function parseCsv(text, node) {
             headers.push('node' + node + '_TempC');
         } else if (h === 'field4') {
             headers.push('node' + node + '_BVolts');
+        } else if (h === 'field5') {
+            headers.push('node' + node + '_RSSI');
+        } else if (h === 'field6') {
+            headers.push('node' + node + '_SNR');
         } else {
             headers.push(h);
         }
