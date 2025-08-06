@@ -57,11 +57,10 @@
             <p><em>Note: The timezone selection only affects how your start and end times are interpreted. All downloaded data uses UTC timestamps.</em></p>
         </section>
         <!-- Global network plots (auto-refresh every 5 minutes) -->
-        <section id="network-plots" class="wide-plots">
+        <section id="network-plots">
         <h3>Network Overview</h3>
 
-        <figure class="wide-plot">
-            <figcaption>Volumetric Soil Moisture (Nodes 1–3)</figcaption>
+        <div class="plot-row">
             <iframe
             id="moisturePlot"
             title="Volumetric Soil Moisture"
@@ -71,10 +70,7 @@
             style="border:1px solid #ccc"
             loading="lazy">
             </iframe>
-        </figure>
 
-        <figure class="wide-plot">
-            <figcaption>Ground Temperature (Nodes 1–3)</figcaption>
             <iframe
             id="tempPlot"
             title="Ground Temperature"
@@ -84,7 +80,7 @@
             style="border:1px solid #ccc"
             loading="lazy">
             </iframe>
-        </figure>
+        </div>
         </section>
         <section class="node-columns">
             <div class="node-column">
