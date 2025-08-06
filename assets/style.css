@@ -251,7 +251,8 @@ body {
 }
 
 #network-plots iframe {
-    width: 900px;
-    height: 420px;
+    width: 450px;
+    height: 260px;
     border: 1px solid #ccc;
+    max-width: 100%;
 }
