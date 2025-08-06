@@ -239,12 +239,19 @@ body {
     margin-right: 10px;
 }
 
-#network-plots { margin: 1rem 0 2rem; }
-#network-plots .wide-plot { margin: 0.75rem 0; }
+#network-plots {
+    margin: 1rem 0 2rem;
+}
+
+#network-plots .plot-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 
 #network-plots iframe {
-  width: 100%;
-  max-width: 1000px;   /* cap the width so it doesn’t get huge on wide monitors */
-  height: 420px;       /* keep height consistent; adjust if you like */
-  border: 1px solid #ccc;
+    width: 900px;
+    height: 420px;
+    border: 1px solid #ccc;
 }
