@@ -53,3 +53,28 @@ function initNavigation() {
 }
 
 document.addEventListener('DOMContentLoaded', initNavigation);
+
+// Auto-refresh ThingSpeak MATLAB Visualization iframes every 5 minutes
+(function autoRefreshNetworkPlots() {
+  const ids = ["moisturePlot", "tempPlot"];
+  function bust(url) {
+    const base = url.split("?")[0];
+    return base + "?t=" + Date.now(); // cache-buster so ThingSpeak re-renders
+  }
+  function refreshVisible() {
+    ids.forEach(id => {
+      const f = document.getElementById(id);
+      if (!f) return;
+      // Only refresh if visible on the page (cheap visibility check)
+      if (f.offsetParent !== null) {
+        const base = f.dataset.base || f.src;
+        f.dataset.base = base;
+        f.src = bust(base);
+      }
+    });
+  }
+  // Initial bust once the page loads
+  window.addEventListener("load", refreshVisible);
+  // Refresh every 5 minutes
+  setInterval(refreshVisible, 5 * 60 * 1000);
+})();
