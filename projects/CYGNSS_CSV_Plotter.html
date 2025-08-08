@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive tool for plotting CYGNSS telemetry CSV data using Plotly.">
     <title>CYGNSS CSV Data Visualizer</title>
     <link rel="stylesheet" href="../assets/style.css">
-    <script src="../assets/main.js"></script>
+    <script src="../assets/main.js" defer></script>
     <!-- Plotly and PapaParse for CSV parsing and plotting -->
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.2/plotly.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
 </head>
 <body>
-<div class="header">
+<header class="header">
     <div class="branding">
         <a href="../index.html"><img src="../assets/images/UMichBlock.svg" alt="University of Michigan Logo"></a>
         <h1>Benjamen D. Miller</h1>
     </div>
-    <div class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
         <div class="dropdown"><button onclick="window.location.href='../index.html'">Home</button></div>
         <div class="dropdown"><button onclick="window.location.href='../assets/resume.pdf'">PDF Resume</button></div>
         <div class="dropdown"><button onclick="window.location.href='cygnss.html'">NASA CYGNSS</button></div>
         <div class="dropdown">
-            <button>Projects</button>
+            <button aria-haspopup="true" aria-expanded="false">Projects</button>
             <div class="dropdown-content">
                 <a href="cygnss.html">NASA CYGNSS</a>
                 <a href="aerial-estate.html">Aerial Estate LLC</a>
@@ -30,8 +31,8 @@
                 <a href="engr100-980.html">ENGR 100-980</a>
             </div>
         </div>
-    </div>
-</div>
+    </nav>
+</header>
 
 <div class="content">
     <h2>CYGNSS CSV Data Visualizer</h2>
