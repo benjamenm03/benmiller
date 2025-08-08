@@ -6,20 +6,20 @@
     <meta name="description" content="Personal website of Benjamen Miller, an Aerospace Engineering student at the University of Michigan College of Engineering, showcasing projects and professional experiences.">
     <title>Benjamen Miller - Aerospace Engineering</title>
     <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/main.js"></script>
+    <script src="assets/main.js" defer></script>
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="branding">
             <a href="index.html"><img src="assets/images/UMichBlock.svg" alt="University of Michigan Logo"></a>
             <h1>Benjamen D. Miller</h1>
         </div>
-        <div class="nav-links">
+        <nav class="nav-links" aria-label="Main navigation">
             <div class="dropdown">
                 <button onclick="window.location.href='assets/resume.pdf'">PDF Resume</button>
             </div>
             <div class="dropdown">
-                <button>Projects</button>
+                <button aria-haspopup="true" aria-expanded="false">Projects</button>
                 <div class="dropdown-content">
                     <a href="projects/cygnss.html">NASA CYGNSS</a>
                     <a href="projects/aerial-estate.html">Aerial Estate LLC</a>
@@ -28,8 +28,8 @@
                     <a href="projects/engr100-980.html">ENGR 100-980</a>
                 </div>
             </div>
-        </div>
-    </div>
+        </nav>
+    </header>
 
     <div class="content">
         <h2>Welcome</h2>
