@@ -38,7 +38,8 @@ function initNavigation() {
             e.preventDefault();
             var menu = this.nextElementSibling;
             if (menu) {
-                menu.classList.toggle('show');
+                var expanded = menu.classList.toggle('show');
+                this.setAttribute('aria-expanded', expanded);
             }
         });
     });
@@ -47,6 +48,10 @@ function initNavigation() {
         document.querySelectorAll('.dropdown-content.show').forEach(function(menu) {
             if (!menu.parentElement.contains(e.target)) {
                 menu.classList.remove('show');
+                var btn = menu.previousElementSibling;
+                if (btn) {
+                    btn.setAttribute('aria-expanded', 'false');
+                }
             }
         });
     });
