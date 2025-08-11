@@ -27,18 +27,6 @@
           </div>
         </label>
       </div>
-
-      <div class="pb-calibration">
-        <div class="pb-cal-row">
-          <label for="inchSlider">Screen calibration (match to a 1&nbsp;inch bar):</label>
-          <input id="inchSlider" type="range" min="60" max="140" step="0.1" value="96" />
-          <span id="inchValue">96</span> <span class="pb-unit">px/in</span>
-        </div>
-        <div class="pb-inch-bar">
-          <div id="inchBar" class="pb-inch"></div>
-          <span>1 inch</span>
-        </div>
-      </div>
     </section>
 
     <section class="pb-main">
@@ -66,13 +54,13 @@
     </footer>
   </div>
 
-  <!-- App script -->
-  <script src="../assets/pcb-backlight/app.js"></script>
-
   <!-- Full-screen highlight modal -->
   <div id="highlightModal" class="pb-modal" aria-hidden="true">
     <button id="closeHighlight" class="pb-close" aria-label="Close highlight">×</button>
     <canvas id="highlightCanvas"></canvas>
   </div>
+
+  <!-- App script -->
+  <script src="../assets/pcb-backlight/app.js"></script>
 </body>
 </html>

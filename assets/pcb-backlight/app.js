@@ -10,16 +10,13 @@
   const layerStatus = $("#layerStatus");
   const traceListEl = $("#traceList");
   const previewCanvas = $("#previewCanvas");
-  const inchSlider = $("#inchSlider");
-  const inchValue = $("#inchValue");
-  const inchBar = $("#inchBar");
   const modal = $("#highlightModal");
   const closeBtn = $("#closeHighlight");
   const highlightCanvas = $("#highlightCanvas");
 
   // State
   const state = {
-    ppi: 96, // screen calibration px per inch
+    ppi: 163, // approximate px per inch for 4K displays
     // Parsed layers
     top: null,
     bottom: null,
@@ -41,12 +38,6 @@
     state.bbox = { minX: 0, minY: 0, maxX: 0, maxY: 0 };
     layerStatus.innerHTML = "";
     traceListEl.innerHTML = '<div class="pb-empty">Upload Gerbers to populate.</div>';
-    drawPreview();
-  }
-
-  function updateInchUI() {
-    inchValue.textContent = state.ppi.toFixed(1);
-    inchBar.style.width = `${state.ppi}px`; // 1 CSS inch at PPI px
     drawPreview();
   }
 
@@ -417,10 +408,12 @@
     ctx.stroke();
   }
 
-  closeBtn.addEventListener("click", () => {
-    modal.classList.remove("show");
-    modal.setAttribute("aria-hidden", "true");
-  });
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+    });
+  }
 
   // ---------- Events ----------
   fileInput.addEventListener("change", (e) => {
@@ -444,13 +437,7 @@
     })
   );
 
-  inchSlider.addEventListener("input", (e) => {
-    state.ppi = parseFloat(e.target.value);
-    updateInchUI();
-  });
-
   // Initialize
-  updateInchUI();
   drawPreview();
 
   // Expose for debugging
