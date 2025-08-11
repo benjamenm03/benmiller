@@ -1,0 +1,39 @@
+/* --- PCB Backlight (scoped) --- */
+#backlight-app { --bg:#0b0b0c; --fg:#e9eef2; --muted:#96a0a8; --accent:#7dd3fc; --panel:#14161a; --rail:#4ade80; --danger:#ff4d4d; }
+#backlight-app, #backlight-app * { box-sizing: border-box; }
+#backlight-app { color:var(--fg); background:var(--bg); min-height:100vh; font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+#backlight-app .shell { display:grid; grid-template-rows:auto 1fr; min-height:100vh; }
+#backlight-app header { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:var(--panel); border-bottom:1px solid #222; }
+#backlight-app h1 { margin:0; font-size:18px; }
+#backlight-app main { display:grid; grid-template-columns:280px 1fr; min-height:0; }
+#backlight-app #sidebar { border-right:1px solid #222; padding:12px; overflow:auto; }
+#backlight-app #viewer { position:relative; overflow:hidden; background:#0a0c0f; }
+#backlight-app .btn { background:#1f2937; color:var(--fg); border:1px solid #2b2f36; padding:8px 12px; border-radius:8px; cursor:pointer; }
+#backlight-app .btn:hover { border-color:var(--accent); }
+#backlight-app .panel-row { display:flex; gap:10px; align-items:center; }
+#backlight-app .switch { display:inline-flex; gap:6px; align-items:center; color:var(--muted); }
+#backlight-app .list { list-style:none; margin:6px 0 14px; padding:0; }
+#backlight-app .list li { padding:6px 8px; border-radius:6px; cursor:pointer; }
+#backlight-app .list li:hover { background:#1a1d22; }
+#backlight-app .list li.active { background:#0f172a; border:1px solid #334155; }
+#backlight-app #netSearch { width:100%; padding:6px 8px; margin:4px 0 8px; border-radius:6px; border:1px solid #2b2f36; background:#0f1115; color:var(--fg); }
+#backlight-app #board { height:calc(100vh - 48px); overflow:auto; }
+#backlight-app #board svg { display:block; margin:0 auto; height:100%; max-width:none; }
+#backlight-app #status { position:absolute; left:10px; bottom:10px; color:var(--muted); padding:4px 8px; border-radius:6px; background:rgba(0,0,0,.4); }
+#backlight-app #paperRails { position:absolute; inset:0; pointer-events:none; }
+#backlight-app #railLeft, #backlight-app #railRight, #backlight-app #railBottom { position:absolute; background:var(--rail); }
+#backlight-app #railLeft, #backlight-app #railRight { width:2px; height:100%; bottom:0; }
+#backlight-app #railBottom { height:2px; left:0; right:0; bottom:0; }
+#backlight-app #blackout { position:fixed; inset:0; background:#000; z-index:1000; display:grid; place-items:center; }
+#backlight-app #blackout.hidden { display:none; }
+#backlight-app #glow { width:100%; height:100%; display:grid; place-items:center; }
+#backlight-app #glow .lit { fill:#fff !important; stroke:#fff !important; }
+#backlight-app #exitFs { position:fixed; top:12px; right:12px; z-index:1001; width:44px; height:44px; font-size:28px; line-height:40px; border-radius:50%; border:1px solid #333; background:#111; color:var(--fg); cursor:pointer; }
+#backlight-app .modal { position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.5); z-index:1100; }
+#backlight-app .modal.hidden { display:none; }
+#backlight-app .modal-card { width:min(560px,calc(100vw - 24px)); background:var(--panel); border:1px solid #2b2f36; border-radius:12px; padding:16px; }
+#backlight-app #calBar { height:20px; background:var(--accent); margin:12px 0; width:400px; }
+#backlight-app .row { display:flex; justify-content:space-between; align-items:center; }
+#backlight-app #ppi { width:100%; }
+#backlight-app .hint { color:var(--muted); }
+#backlight-app .error { color:var(--danger); }
