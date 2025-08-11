@@ -18,7 +18,10 @@
       <header>
         <h1>PCB Backlight</h1>
         <div class="panel-row">
-          <label class="btn"><input id="zipInput" type="file" accept=".zip" hidden />Load KiCad fabrication ZIP</label>
+          <label class="btn">
+            <input id="zipInput" type="file" accept=".zip" hidden />
+            Load KiCad fabrication ZIP
+          </label>
           <button id="calBtn" class="btn">Calibrate inches</button>
           <label class="switch"><input id="mirrorX" type="checkbox" /><span>Mirror X</span></label>
           <label class="switch"><input id="mirrorY" type="checkbox" /><span>Mirror Y</span></label>
@@ -27,35 +30,47 @@
 
       <main>
         <aside id="sidebar">
-          <h2>Layers</h2><ul id="layerList" class="list"></ul>
+          <h2>Layers</h2>
+          <ul id="layerList" class="list"></ul>
+
           <h2>Nets <small>(IPC-D-356)</small></h2>
           <input id="netSearch" placeholder="filter…" />
           <ul id="netList" class="list"></ul>
-          <p class="hint">Include an IPC-D-356 file in your ZIP for net selection, or click traces directly.</p>
+
+          <p class="hint">
+            Tip: Include an IPC-D-356 file in your ZIP for a net list, or click traces directly.
+          </p>
         </aside>
 
         <section id="viewer">
           <div id="paperRails" aria-hidden="true">
-            <div id="railLeft"></div><div id="railRight"></div><div id="railBottom"></div>
+            <div id="railLeft"></div>
+            <div id="railRight"></div>
+            <div id="railBottom"></div>
           </div>
           <div id="board"></div>
-          <div id="status"></div>
+          <div id="status">Idle</div>
         </section>
       </main>
     </div>
 
+    <!-- Fullscreen backlight overlay -->
     <div id="blackout" class="hidden">
       <button id="exitFs" aria-label="Exit backlight">×</button>
       <div id="glow"></div>
     </div>
 
+    <!-- Calibration modal -->
     <div id="calModal" class="modal hidden">
       <div class="modal-card">
         <h2>Calibrate inches</h2>
         <p>Use a ruler. Adjust until this bar measures exactly <b>4.00 in</b>.</p>
         <div id="calBar"></div>
         <input id="ppi" type="range" min="60" max="300" step="0.5" />
-        <div class="row"><span id="ppiLabel"></span><button id="calSave" class="btn">Save</button></div>
+        <div class="row">
+          <span id="ppiLabel"></span>
+          <button id="calSave" class="btn">Save</button>
+        </div>
       </div>
     </div>
   </div>
