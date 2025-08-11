@@ -30,13 +30,10 @@
 
 #pcb-backlight-app .pb-controls {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
   padding: 16px 20px;
   border-bottom: 1px solid var(--pb-border);
-}
-@media (max-width: 900px) {
-  #pcb-backlight-app .pb-controls { grid-template-columns: 1fr; }
 }
 
 #pcb-backlight-app .pb-dropzone {
@@ -58,17 +55,6 @@
   position: absolute; inset: 0; opacity: 0; cursor: pointer;
 }
 #pcb-backlight-app .pb-dropzone .pb-hint { color: var(--pb-dim); margin-top: 6px; font-size: 13px; }
-
-#pcb-backlight-app .pb-calibration .pb-cal-row {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
-}
-#pcb-backlight-app .pb-inch-bar {
-  display: flex; align-items: center; gap: 10px;
-}
-#pcb-backlight-app .pb-inch {
-  height: 10px; background: var(--pb-accent-2); border-radius: 4px;
-  width: 96px; /* will be overridden by JS for calibration */
-}
 
 #pcb-backlight-app .pb-main {
   display: grid;
