@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PCB Backlight Highlighter</title>
+  <link rel="stylesheet" href="assets/pcb-backlight/style.css" />
+</head>
+<body>
+  <div id="pcb-backlight-app" class="pb-app">
+    <header class="pb-header">
+      <h1>PCB Backlight Highlighter</h1>
+      <p class="pb-subtitle">Load your Gerbers (Top, Bottom, Edge Cuts) → click a trace → full-screen highlight.</p>
+    </header>
+
+    <section class="pb-controls">
+      <div class="pb-upload">
+        <label class="pb-dropzone" id="dropzone">
+          <input id="fileInput" type="file" multiple accept=".gbr,.gtl,.gbl,.gm1,.gko,.pho,.gb0,.gt0,.gerber,.txt" />
+          <div class="pb-dropzone-text">
+            <strong>Drop your Gerber files here</strong> or click to choose
+            <div class="pb-hint">
+              Expecting at least:
+              <code>*_F_Cu.gtl</code>, <code>*_B_Cu.gbl</code>, and <code>*_Edge_Cuts.gm1</code> (or <code>.gko</code>).
+              Other files (mask, paste, drills) are optional and safely ignored.
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="pb-calibration">
+        <div class="pb-cal-row">
+          <label for="inchSlider">Screen calibration (match to a 1&nbsp;inch bar):</label>
+          <input id="inchSlider" type="range" min="60" max="140" step="0.1" value="96" />
+          <span id="inchValue">96</span> <span class="pb-unit">px/in</span>
+        </div>
+        <div class="pb-inch-bar">
+          <div id="inchBar" class="pb-inch"></div>
+          <span>1 inch</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-main">
+      <aside class="pb-sidebar">
+        <div class="pb-layers">
+          <h3>Loaded Layers</h3>
+          <ul id="layerStatus" class="pb-list"></ul>
+        </div>
+        <div class="pb-traces">
+          <h3>Traces</h3>
+          <div id="traceList" class="pb-trace-list"><div class="pb-empty">Upload Gerbers to populate.</div></div>
+        </div>
+      </aside>
+
+      <div class="pb-canvas-wrap">
+        <canvas id="previewCanvas"></canvas>
+        <div class="pb-overlay-hint">Outline = Edge Cuts. Traces are lightly shown until you select one.</div>
+      </div>
+    </section>
+
+    <footer class="pb-footer">
+      <div>
+        Tip: This parser focuses on standard KiCad RS‑274X moves (D01/D02). Arcs & complex regions may be simplified.
+      </div>
+    </footer>
+  </div>
+
+  <!-- App script -->
+  <script src="assets/pcb-backlight/app.js"></script>
+
+  <!-- Full-screen highlight modal -->
+  <div id="highlightModal" class="pb-modal" aria-hidden="true">
+    <button id="closeHighlight" class="pb-close" aria-label="Close highlight">×</button>
+    <canvas id="highlightCanvas"></canvas>
+  </div>
+</body>
+</html>
