@@ -69,7 +69,7 @@ Note: The distance from the floor to the ceiling of the second floor is: 10' 6".
 Imagine you are on the ground. If you walk up one set of stairs the ceiling above your head is this height^.
 </div>
 
-We are going to measure the terminal velocity of your parachute with three different mass configurations, and create plots of terminal velocity vs mass. We have created a [spreadsheet](https://docs.google.com/spreadsheets/d/1g0C3GjiIXb2twbJVo77Gfwd3KZr_5--W4aGh4ZKWDxo/edit?usp=sharing) for you to record your values in. The sheet is laid out as a 1x3 matrix: one parachute area paired with the three payload masses you will test.
+We are going to measure the terminal velocity of your parachute with three different mass configurations, and create plots of terminal velocity vs mass. You should create a spreadsheet to record your values in, such as total system mass, parachute area, trial numbers, time between two points (ground and some other intermediate location), experimental terminal velocity from d = r*t, and theoretical T.V. from the equations.
 
 - Go to the Robotics building across the street. If you have three team members present, designate one as the person transporting the system back up the stairs between trials, one as the dropper, and one as the recorder. Additional members can work on the Altium lab or aid in the drop tests.
 
