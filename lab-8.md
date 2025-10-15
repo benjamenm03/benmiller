@@ -65,8 +65,7 @@ Terminal velocity is when the drag force is equal to the weight of the object, a
 ### Parachute Trials
 
 <div class="primer-spec-callout info" markdown="1">
-Note: The vertical distance from the ground floor to the ceiling of the second floor is 10' 6" (3.20 m).
-Imagine you are on the ground. If you walk up one set of stairs the ceiling above your head is this height.
+Note: The vertical distances are given in the Slack lab-help channel.
 </div>
 
 Before you begin collecting data, identify the exact location from which you will release the parachute. Use the measuring tape to determine the vertical distance from your release point to the top of the second-floor ceiling marker (the point described above) and from that ceiling marker to the ground. Record both distances in meters in your spreadsheet so that you can calculate the travel distances associated with each timing interval.
