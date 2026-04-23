@@ -98,33 +98,53 @@ The network currently produces:
 \section{Bill of Materials and Procurement}
 This section is intended to be the master procurement list. Where exact revision-specific part numbers are not present in the repository, the row is marked for completion. The code files identify the board families used in the current build even when the repository does not expose a vendor part number.
 
-\subsection{Primary Field Sensor and Node Hardware}
+\subsection{Hardware by Deployment Group}
 \begingroup
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.20\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} >{\raggedright\arraybackslash}p{0.26\linewidth}}
 \toprule
-Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
+Subsystem & Suggested part / description & Manufacturer part number & Procurement/Datasheet link \\
 \midrule
 \endfirsthead
 \toprule
-Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
+Subsystem & Suggested part / description & Manufacturer part number & Procurement/Datasheet link \\
 \midrule
 \endhead
-Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \href{https://www.digikey.com/en/products?keywords=TEROS\%2012}{DigiKey} \\
-Node controller & Arduino Nano Classic, field node controller & \todo{Exact board SKU} & \href{https://www.digikey.com/en/products?keywords=Arduino\%20Nano\%20Classic}{DigiKey} \\
-Wireless radio / modem & HopeRF RFM95-class 915 MHz LoRa module used on the field node & \todo{Exact RFM95 variant} & \href{https://www.digikey.com/en/products?keywords=RFM95\%20915\%20MHz}{DigiKey} \\
-Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{datasheet} \\
-Battery pack & Field battery source read on A0 after wake-up & \todo{Battery chemistry / pack SKU} & \todo{Add DigiKey or vendor link} \\
-Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU} & \href{https://www.digikey.com/en/products?keywords=ESP8266\%20NodeMCU\%20v3}{DigiKey} \\
-microSD card & High-endurance microSD card in the SD adapter attached to the base station & \todo{Exact card SKU} & \href{https://www.digikey.com/en/products?keywords=high\%20endurance\%20microSD}{DigiKey} \\
-microSD adapter & Base-station SD adapter on bit-banged SPI (CS D4, MOSI D7, MISO D6, SCK D5) & \todo{Exact adapter SKU} & \todo{Add DigiKey or vendor link} \\
-Enclosure & Weather-resistant enclosure with cable glands & \todo{Exact enclosure SKU} & \todo{Add DigiKey or vendor link} \\
-Cable glands & Sized for sensor lead, battery lead, and antenna pass-throughs & \todo{Exact gland sizes} & \todo{Add DigiKey or vendor link} \\
-Desiccant & Silica gel packs or equivalent replacement packs & \todo{Exact pack SKU} & \href{https://www.digikey.com/en/products?keywords=silica\%20gel\%20desiccant}{DigiKey} \\
-Sealant & Neutral-cure silicone for housing penetrations and gasket assist & \todo{Exact sealant SKU} & \href{https://www.digikey.com/en/products?keywords=neutral\%20cure\%20silicone}{DigiKey} \\
-Antenna & Matching antenna for the field LoRa radio used on the revision & \todo{Exact antenna SKU} & \todo{Add DigiKey or vendor link} \\
-Mounting hardware & Stakes, brackets, fasteners, stand-offs, and strain relief & \todo{Exact hardware list} & \todo{Add DigiKey or vendor link} \\
+\multicolumn{4}{l}{\textbf{Field Node Components}} \\
+\midrule
+Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{METER Group product page} \\
+Node controller & Arduino Nano Classic, field node controller & A000005 & \href{https://www.digikey.com/en/products?keywords=Arduino\%20Nano\%20Classic}{DigiKey search} \\
+Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts.pdf}{datasheet} \\
+Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{METER Group product page} \\
+Battery pack & Field battery source & D-size ER34615 non-rechargeable & - \\
+Boost converter & Adafruit MiniBoost 5V @ 1A for boosting battery voltage to regulated 5V rail & 4654 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/4654/13687995}{DigiKey 1528-4654-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/445/4654_Web.pdf}{datasheet} \\
+Bulk storage capacitor & Aluminum electrolytic capacitor, 470 \textmu F, 16 V, radial through-hole & EEU-FR1C471 & \href{https://www.digikey.com/en/products/detail/panasonic-electronic-components/EEU-FR1C471/2433489}{DigiKey P14394-ND} / \href{https://industrial.panasonic.com/cdbs/www-data/pdf/RDF0000/ABA0000C1259.pdf}{datasheet} \\
+Teros terminal block & 3-position, 3.5 mm top-entry PCB terminal block for bare-wire TEROS 12 connection & 1-2834011-3 & \href{https://www.digikey.com/en/products/detail/te-connectivity-amp-connectors/1-2834011-3/1867261}{DigiKey A123849-ND} / \href{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1-1773930-3_BuchananWM_Brochure&DocType=Data\%20Sheet&DocLang=English&DocFormat=pdf&PartCntxt=1-2834011-3}{datasheet} \\
+Battery connector header (Samtec option) & 2-pin vertical 2.54 mm header listed for generic battery connection & TSW-102-07-G-S & \href{https://www.digikey.com/en/products/detail/samtec-inc/TSW-102-07-G-S/1106015}{DigiKey SAM1029-02-ND} / \href{https://suddendocs.samtec.com/catalog_english/tsw_th.pdf}{datasheet} \\
+Battery connector header (Molex option) & 2-pin vertical 2.54 mm Molex header listed for battery connection & 0022272021 & \href{https://www.digikey.com/en/products/detail/molex/0022272021/26686}{DigiKey WM4111-ND} / \href{https://www.molex.com/en-us/products/part-detail/22272021?display=pdf}{datasheet} \\
+RTC module & Adafruit DS3231 Precision RTC breakout & 3013 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3013/5772181}{DigiKey 1528-3013-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-ds3231-precision-rtc-breakout.pdf}{datasheet} \\
+RTC backup battery & 3 V CR1220 coin cell for RTC module & CR1220 & \href{https://www.digikey.com/en/products/detail/fdk-america-inc/CR1220/435282}{DigiKey SY033-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/6163/supplier52002.pdf}{datasheet} \\
+Teros series resistor & 510 \(\Omega\), 1\%, 1/4 W, 1206 resistor listed in series with TEROS 12 line & RC1206FR-07510RL & \href{https://www.digikey.com/en/products/detail/yageo/RC1206FR-07510RL/728887}{DigiKey 311-510FRCT-ND} / \href{https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L}{datasheet} \\
+Teros pull resistor & 100 k\(\Omega\), 1\%, 1/4 W, 1206 resistor listed parallel with Arduino on TEROS 12 line & RC1206FR-07100KL & \href{https://www.digikey.com/en/products/detail/yageo/RC1206FR-07100KL/728739}{DigiKey 311-100KFRCT-ND} / \href{https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L}{datasheet} \\
+Teros line capacitor & 220 pF, 50 V, C0G/NP0, 1206 ceramic capacitor listed in parallel with 100 k\(\Omega\) resistor & C1206C221J5GACTU & \href{https://www.digikey.com/en/products/detail/kemet/C1206C221J5GACTU/411837}{DigiKey 399-C1206C221J5GACTUCT-ND} / \href{https://www.yageogroup.com/content/datasheet/asset/file/KEM_C1003_C0G_SMD}{datasheet} \\
+\midrule
+\multicolumn{4}{l}{\textbf{Base Station Components}} \\
+\midrule
+Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts.pdf}{datasheet} \\
+Antenna & TE Connectivity Linx compact right-angle whip antenna, 915 MHz, SMA male & ANT-916-CW-RCS-SMA & \href{https://www.digikey.com/en/products/detail/te-connectivity-linx/ANT-916-CW-RCS-SMA/4477921}{DigiKey 343-ANT-916-CW-RCS-SMA-ND} / \href{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=CW-RCS_Series&DocType=Data+Sheet&DocLang=English&DocFormat=pdf&PartCntxt=ANT-916-CW-RCS-SMA}{datasheet} \\
+Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU not present in supplied DigiKey list} & \href{https://www.digikey.com/en/products?keywords=ESP8266\%20NodeMCU\%20v3}{DigiKey search} \\
+microSD adapter & Adafruit MicroSD Card Breakout Board, 5V or 3V logic compatible & 254 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/254/5353571}{DigiKey 1528-1462-ND} / \href{https://github.com/adafruit/MicroSD-breakout-board}{reference} \\
+Barrel jack connector & 2.0 mm ID \(\times\) 5.5 mm OD SMT power jack for 5V input adapter & PJ-002AH-SMT-TR & \href{https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/PJ-002AH-SMT-TR/2620537}{DigiKey CP-002AHPJCT-ND} / \href{https://www.cuidevices.com/product/resource/pj-002ah-smt-tr.pdf}{datasheet} \\
+Wall power adapter & 5V AC/DC wall adapter used with the barrel jack power input & 16-00014 & \href{https://www.digikey.com/en/products/detail/tensility-international-corp/16-00014/3448224}{DigiKey 839-16-00014-ND} / \href{https://tensility.s3.us-west-2.amazonaws.com/uploads/pdffiles/16-00014.pdf}{datasheet} \\
+Status LED & Blue SMD indicator LED for base-station status indication & LTST-C230TBKT & \href{https://www.digikey.com/en/products/detail/lite-on-inc/LTST-C230TBKT/385847}{DigiKey 160-1889-1-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/807/LTST-C230TBKT.pdf}{datasheet} \\
+LED current-limit resistor & 100 \(\Omega\), 1\%, 1/4 W, 1206 resistor for the blue status LED & RC1206FR-07100RL & \href{https://www.digikey.com/en/products/detail/yageo/RC1206FR-07100RL/728488}{DigiKey 311-100FRCT-ND} / \href{https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L}{datasheet} \\
+\midrule
+\multicolumn{4}{l}{\textbf{Enclosure and Mounting Components}} \\
+\midrule
+Enclosure housing & Weather-resistant enclosure sized for node electronics and battery pack & \todo{Exact enclosure model not yet recorded} & \todo{Add DigiKey or vendor link} \\
+Cable glands / strain relief & UV-resistant cable glands sized to TEROS and antenna lead diameters & \todo{Exact gland SKU not yet recorded} & \todo{Add DigiKey or vendor link} \\
+Mounting hardware & Pole or post mounting brackets, stainless fasteners, and clamps & \todo{Exact mounting hardware set not yet recorded} & \todo{Add DigiKey or vendor link} \\
 \bottomrule
 \end{longtable}
 \endgroup
