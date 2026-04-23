@@ -56,7 +56,7 @@
     \includegraphics[width=0.62\linewidth]{sm_node_pic.png}%
     \makebox[0pt][l]{\hspace{0.6em}\raisebox{0.45cm}{\includegraphics[width=1.1in]{qr.png}}}\\[0.9em]
     Version 1.0\\
-    Prepared for the Soil Moisture Network\\
+    Prepared by Benjamen D. Miller\\
     \today
 \end{center}
 
@@ -166,6 +166,14 @@ Use the exact revision of each component as the authoritative record for the bui
 \end{itemize}
 
 \textbf{Note:} The repository does not include a full revision-specific BOM for the node electronics. Populate the table above with the exact MCU, radio, regulator, charger, enclosure, and sensor accessory part numbers used on the build you are documenting. Keep this document as the master record for each hardware revision.
+
+\section{Custom PCB Files}
+This project includes custom PCB design packages for both the base station and field node hardware. The files below are production .zip files for the current revisions.
+
+\begin{itemize}
+    \item Base Station Custom PCB: \href{../assets/PCBs/BaseStation_Rev1.zip}{BaseStation\_Rev1.zip}
+    \item Field Node Custom PCB: \href{../assets/PCBs/FieldNode_Rev2.zip}{FieldNode\_Rev2.zip}
+\end{itemize}
 
 \section{Site and Network Setup}
 \subsection{ThingSpeak Account Setup}
@@ -537,35 +545,6 @@ The current site uses the following project resources and live endpoints:
     \item ThingSpeak node dashboards: Node 1 \href{https://thingspeak.mathworks.com/channels/2996904}{dashboard}, Node 2 \href{https://thingspeak.mathworks.com/channels/2996908}{dashboard}, Node 3 \href{https://thingspeak.mathworks.com/channels/2996910}{dashboard}
     \item Combined CSV download helper
     \item MATLAB visualizations
-\end{itemize}
-
-\section{Appendix B: Recommended Commissioning Data Sheet}
-Use the following checklist for each installed node:
-\begin{itemize}
-    \item node number
-    \item channel ID
-    \item write key location
-    \item read key location
-    \item sensor serial number
-    \item enclosure serial number or label
-    \item install date
-    \item install location
-    \item MAC address
-    \item battery voltage at install
-    \item notes on soil type and probe depth
-    \item photo reference path
-\end{itemize}
-
-\section{Appendix C: Items to Fill In}
-The following project-specific details should be completed with the exact revision information from the hardware and firmware source of truth:
-\begin{itemize}
-    \item exact node MCU or radio board part number
-    \item exact base station board part number
-    \item exact charger, regulator, and power path parts
-    \item exact enclosure model and cable gland models
-    \item exact TEROS 12 wiring order used on the installed revision
-    \item exact microSD card size and file structure used by firmware
-    \item exact uM msetup provisioning steps if the interface is changed in the future
 \end{itemize}
 
 \end{document}
