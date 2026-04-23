@@ -1,0 +1,538 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{caption}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!60!black,
+    urlcolor=blue!60!black,
+    pdftitle={Soil Moisture Node Operating Manual},
+    pdfauthor={Benjamen D. Miller}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Soil Moisture Node Operating Manual}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+\setlist[itemize]{leftmargin=1.25em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.25em,topsep=0.35em}
+\renewcommand{\arraystretch}{1.15}
+
+\newcommand{\link}[1]{\url{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Soil Moisture Node Operating Manual}}\\[0.4em]
+    {\large Installation, commissioning, maintenance, and scaling guide}\\[0.75em]
+    Version 1.0\\
+    Prepared for the Soil Moisture Network\\
+    \today
+\end{center}
+
+\tableofcontents
+\newpage
+
+\section{Purpose and Scope}
+This document is the operating manual for the soil moisture node network currently published on the website project page and ThingSpeak dashboards. It is written to support field installation, commissioning, troubleshooting, maintenance, and future expansion of the network.
+
+The network currently publishes per-node data for four channels in the website download tool and at least three live dashboard nodes on the project page. The downloadable data pipeline expects the following fields from ThingSpeak feeds:
+\begin{itemize}
+    \item field1: first Teros payload value
+    \item field2: second Teros payload value
+    \item field3: third Teros payload value
+    \item field4: battery voltage
+    \item field5: received signal strength indicator (RSSI)
+    \item field6: signal-to-noise ratio (SNR)
+\end{itemize}
+
+\section{System Overview}
+\subsection{High-Level Architecture}
+Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. In the current codebase, the field node is an Arduino Nano Classic running \emph{sm\_code/field-node/field-node.ino} and the base station is an ESP8266 NodeMCU v3 running \emph{sm\_code/base-station/base-station.ino}. The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public project page renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
+
+The current website references these live node channels:
+\begin{itemize}
+    \item Node 1: \link{https://thingspeak.mathworks.com/channels/2996904}
+    \item Node 2: \link{https://thingspeak.mathworks.com/channels/2996908}
+    \item Node 3: \link{https://thingspeak.mathworks.com/channels/2996910}
+    \item Node 4: \link{https://thingspeak.mathworks.com/channels/2996911} (used in the CSV download tool)
+\end{itemize}
+
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for the network behavior is the firmware plus the website helpers in \emph{assets/download.js} and \emph{projects/soil-moisture-network.html}.
+
+\subsection{Data Products}
+The network currently produces:
+\begin{itemize}
+    \item raw TEROS 12 payload values from the field node
+    \item soil temperature and any additional sensor values returned by the Teros payload
+    \item battery voltage at the node
+    \item RSSI and SNR for wireless link health
+    \item combined CSV exports across all nodes
+    \item event logs for boot, time request, time sync, packet receipt, and timeout events
+    \item network summary visualizations on ThingSpeak MATLAB visualizations
+\end{itemize}
+
+\section{Bill of Materials and Procurement}
+This section is intended to be the master procurement list. Where exact revision-specific part numbers are not present in the repository, the row is marked for completion. The code files identify the board families used in the current build even when the repository does not expose a vendor part number.
+
+\subsection{Primary Field Sensor and Node Hardware}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.20\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} >{\raggedright\arraybackslash}p{0.26\linewidth}}
+\toprule
+Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
+\midrule
+\endfirsthead
+\toprule
+Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
+\midrule
+\endhead
+Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \link{https://www.digikey.com/en/products?keywords=TEROS%2012} \\
+Node controller & Arduino Nano Classic, field node controller & \todo{Exact board SKU} & \link{https://www.digikey.com/en/products?keywords=Arduino%20Nano%20Classic} \\
+Wireless radio / modem & HopeRF RFM95-class 915 MHz LoRa module used on the field node & \todo{Exact RFM95 variant} & \link{https://www.digikey.com/en/products?keywords=RFM95%20915%20MHz} \\
+Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \link{https://metergroup.com/environment/products/teros-12/} \\
+Battery pack & Field battery source read on A0 after wake-up & \todo{Battery chemistry / pack SKU} & \todo{Add DigiKey or vendor link} \\
+Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU} & \link{https://www.digikey.com/en/products?keywords=ESP8266%20NodeMCU%20v3} \\
+microSD card & High-endurance microSD card in the SD adapter attached to the base station & \todo{Exact card SKU} & \link{https://www.digikey.com/en/products?keywords=high%20endurance%20microSD} \\
+microSD adapter & Base-station SD adapter on bit-banged SPI (CS D4, MOSI D7, MISO D6, SCK D5) & \todo{Exact adapter SKU} & \todo{Add DigiKey or vendor link} \\
+Enclosure & Weather-resistant enclosure with cable glands & \todo{Exact enclosure SKU} & \todo{Add DigiKey or vendor link} \\
+Cable glands & Sized for sensor lead, battery lead, and antenna pass-throughs & \todo{Exact gland sizes} & \todo{Add DigiKey or vendor link} \\
+Desiccant & Silica gel packs or equivalent replacement packs & \todo{Exact pack SKU} & \link{https://www.digikey.com/en/products?keywords=silica%20gel%20desiccant} \\
+Sealant & Neutral-cure silicone for housing penetrations and gasket assist & \todo{Exact sealant SKU} & \link{https://www.digikey.com/en/products?keywords=neutral%20cure%20silicone} \\
+Antenna & Matching antenna for the field LoRa radio used on the revision & \todo{Exact antenna SKU} & \todo{Add DigiKey or vendor link} \\
+Mounting hardware & Stakes, brackets, fasteners, stand-offs, and strain relief & \todo{Exact hardware list} & \todo{Add DigiKey or vendor link} \\
+\bottomrule
+\end{longtable}
+
+\subsection{Datasheet and Reference Links}
+Use the exact revision of each component as the authoritative record for the build. Recommended sources:
+\begin{itemize}
+    \item Manufacturer datasheet for the TEROS 12 sensor: \link{https://metergroup.com/environment/products/teros-12/}
+    \item DigiKey search for TEROS 12 and accessory hardware: \link{https://www.digikey.com/en/products?keywords=TEROS%2012}
+    \item ThingSpeak documentation and API references: \link{https://www.mathworks.com/help/thingspeak/}
+    \item ThingSpeak REST API overview: \link{https://www.mathworks.com/help/thingspeak/rest-api.html}
+\end{itemize}
+
+\textbf{Note:} The repository does not include a full revision-specific BOM for the node electronics. Populate the table above with the exact MCU, radio, regulator, charger, enclosure, and sensor accessory part numbers used on the build you are documenting. Keep this document as the master record for each hardware revision.
+
+\section{Site and Network Setup}
+\subsection{ThingSpeak Account Setup}
+\begin{enumerate}
+    \item Create or log in to a ThingSpeak account at \link{https://thingspeak.mathworks.com/}.
+    \item Create one private channel per node. The current firmware and website tooling support four nodes end to end.
+    \item Enable at least six fields in each channel. The current payload writes Teros values to fields 1--3, battery voltage to field 4, RSSI to field 5, and SNR to field 6.
+    \item Record each channel ID and both write and read API keys in a secure configuration store.
+    \item Keep a copy of the channel IDs and key assignments in this manual's appendix or in a restricted password manager.
+\end{enumerate}
+
+\subsection{Field Layout Recommendation}
+For consistency across nodes, use the following order in ThingSpeak fields:
+\begin{enumerate}
+    \item field1: first Teros payload value
+    \item field2: second Teros payload value
+    \item field3: third Teros payload value
+    \item field4: battery voltage
+    \item field5: RSSI in dBm
+    \item field6: SNR in dB
+\end{enumerate}
+
+This ordering matches the current upload code in \texttt{sm\_code/base-station/base-station.ino}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
+
+\subsection{API Key Management}
+ThingSpeak requires separate credentials for reading and writing. The operational rule is:
+\begin{itemize}
+    \item write key: used by the base station when publishing live data to ThingSpeak
+    \item read key: used by the website CSV download tool and any private analytics scripts
+\end{itemize}
+
+In the current firmware, write keys live in the \texttt{THINGSPEAK\_API\_KEYS[4]} array in \texttt{sm\_code/base-station/base-station.ino}. The node firmware does not contain ThingSpeak credentials; it only sends LoRa packets to the base station. The website read keys live in \texttt{assets/download.js} inside the \texttt{NODE\_INFO} object.
+
+Store keys only where they are used. Never hard-code a write key in a public repository. If you add, replace, or rotate a node, update both the base-station write-key array and the website read-key map so the channel remains usable from the upload path and the download path.
+
+\subsection{Website Download Tool Configuration}
+The current website download helper maps node labels to ThingSpeak channel IDs and read keys. If you add or replace a node, update the node map in the JavaScript helper so the CSV download tool continues to work. The present mapping includes four nodes, and the combined download path aggregates all channels into a single CSV export. The helper expects each channel to expose the same field ordering described above.
+
+\section{Node Installation}
+\subsection{Pre-Deployment Checklist}
+Before field deployment, verify the following:
+\begin{itemize}
+    \item the sensor probe is identified and labeled with the correct node number
+    \item the field node is compiled with the correct \texttt{NODE\_ID} in \texttt{sm\_code/field-node/field-node.ino}
+    \item the base station has the correct entry in the \texttt{THINGSPEAK\_API\_KEYS} array
+    \item the base station can reach the \texttt{MSetup} Wi-Fi network and any required local network services
+    \item all enclosures are dry, clean, and fully sealed
+    \item desiccant packs are fresh
+    \item all connectors are strain-relieved and waterproofed as designed
+    \item battery voltage is within the acceptable commissioning range
+\end{itemize}
+
+\subsection{Code-Controlled Hardware Map}
+The current code path is split between the field node and base station:
+\begin{itemize}
+    \item Field node: Arduino Nano Classic, \texttt{NODE\_ID} 1--4, Teros 12 on SDI-12 D2, LoRa CS on D10, RST on D9, and DIO0 on D3.
+    \item Base station: ESP8266 NodeMCU v3, LoRa CS on D8, INT on D1, RST on D0, SD CS on D4, SD card detect on D2, and battery sense on A0.
+    \item The node transmits \texttt{DATA:<id>,<epoch>,<values...>} packets, and the base station responds with \texttt{ACKTIME:<epoch>} after logging.
+\end{itemize}
+
+\subsection{Probe Placement}
+Install the TEROS 12 probe in undisturbed soil where root-zone conditions are representative of the target measurement area. Avoid air gaps around the sensor body. Record probe depth, orientation, and site notes for each node.
+
+Suggested field notes for each install:
+\begin{itemize}
+    \item GPS or map location
+    \item soil type and texture
+    \item probe depth
+    \item distance to nearest disturbance source
+    \item node ID and channel ID
+    \item enclosure mounting height
+    \item date and installer
+\end{itemize}
+
+\subsection{Enclosure and Environmental Protection}
+Use a weather-resistant enclosure that supports cable glands or bulkhead fittings. Apply neutral-cure silicone only where it does not interfere with gasket compression or future maintenance. Use silicone to improve seal integrity around holes, not as a substitute for the correct mechanical enclosure.
+
+Maintain these practices:
+\begin{itemize}
+    \item keep desiccant packs inside the enclosure and replace them on a schedule
+    \item route cables with drip loops when possible
+    \item avoid pinching sensor leads under lids or gaskets
+    \item inspect seals after each maintenance opening
+    \item replace any compressed, cracked, or permanently deformed gasket material
+\end{itemize}
+
+\section{Wiring and Electrical Integration}
+\subsection{Board-Level Pin Maps}
+The current code identifies the following pin mappings:
+\begin{itemize}
+    \item Field node, Arduino Nano Classic: LoRa CS D10, LoRa RST D9, LoRa DIO0 D3, Teros 12 SDI-12 line D2, battery sense A0.
+    \item Base station, ESP8266 NodeMCU v3: LoRa CS D8, LoRa INT D1, LoRa RST D0, SD CS D4, SD card detect D2, SD LED D3, battery sense A0.
+    \item Base station SD adapter uses bit-banged SPI so the RFM95 can remain on hardware SPI pins.
+\end{itemize}
+
+\subsection{TEROS 12 Pin Order}
+\textbf{This section intentionally includes a fill-in figure block for the exact TEROS 12 pin order used on your hardware revision.} Insert your wiring photo or pinout diagram below and annotate the ordered connections. The code currently assumes the Teros probe is reachable over SDI-12 on the field node's D2 line, but the exact connector lead order still needs to be documented for your harness and enclosure build.
+
+\begin{figure}[h!]
+    \centering
+    \fbox{\parbox{0.85\linewidth}{\centering
+    Insert TEROS 12 pin-order photograph or diagram here.\\[0.5em]
+    Label the pins in the exact order used on the node revision.\\[0.5em]
+    Example fields to annotate: power, ground, data, shield, spare, and any sensor-specific leads.}}
+    \caption{TEROS 12 pin order and wiring reference.}
+\end{figure}
+
+\subsection{Recommended Wiring Documentation Fields}
+For each node revision, record:
+\begin{itemize}
+    \item exact connector type and part number
+    \item wire colors by pin
+    \item board header numbers or silkscreen labels
+    \item sensor power rail voltage
+    \item any pull-up or pull-down resistors used
+    \item analog or digital interface details
+    \item shield grounding strategy
+    \item which lead is tied to the SDI-12 line and which lead is tied to power and ground
+\end{itemize}
+
+\subsection{Power and Battery Wiring}
+Document the battery chemistry, rated output, protection circuit, and connector orientation before installation. If a charger or regulator is present, identify its input range and low-voltage cutoff behavior. Verify polarity with a meter before final sealing.
+
+\section{Wi-Fi and Base Station Commissioning}
+\subsection{Connecting to Wi-Fi with uM msetup}
+Use the University of Michigan setup workflow referenced in this project as the standard way to provision Wi-Fi credentials on the base station when that workflow is available. The current firmware does not implement a captive portal; it simply joins the open SSID \texttt{MSetup} at boot with \texttt{WiFi.begin("MSetup")}. 
+
+General process:
+\begin{enumerate}
+    \item Power the base station and confirm the serial log shows Wi-Fi startup against \texttt{MSetup}.
+    \item If your deployment requires a prior registration step, add the ESP8266 MAC address to the approved list before leaving the lab.
+    \item Confirm the base station receives an IP address and can fetch NTP time from \texttt{pool.ntp.org}.
+    \item Confirm the clock is set and the firmware logs \texttt{NTP} or \texttt{NOWIFI} in \texttt{events.csv}.
+    \item Reboot once and confirm the behavior is persistent.
+\end{enumerate}
+
+If the uM msetup process changes, update this section with the exact screen-by-screen instructions and the current provisioning URL or captive portal behavior. If the network is not available, the base station still logs locally to the SD card, but ThingSpeak publishing is skipped until Wi-Fi returns.
+
+\subsection{MAC Address Registration}
+Record the base station MAC address in the site commissioning log. If network access depends on allow-listing, the MAC address should be added before leaving the lab or before final field install. The current base station is an ESP8266, so document the single Wi-Fi interface MAC address rather than separate 2.4 GHz and 5 GHz addresses.
+
+\subsection{API Keys in Base Station Code}
+When adding API keys to base station code, use the following pattern:
+\begin{itemize}
+    \item keep keys in a configuration file or environment store where possible
+    \item separate node-specific keys from global configuration
+    \item rotate credentials if a device is replaced or a technician leaves the project
+    \item verify the code path that submits the write request after every firmware or configuration change
+\end{itemize}
+
+In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array in \texttt{sm\_code/base-station/base-station.ino}. The order is fixed: slot 1 goes to node 1, slot 2 to node 2, slot 3 to node 3, and slot 4 to node 4. The uploader rejects node IDs outside 1--4. If you need a fifth node, enlarge the array, update the node guard in \texttt{sendCsvToThingSpeak}, and expand the website download helper's \texttt{NODE\_INFO} map.
+
+\section{Commissioning and First Data Upload}
+\subsection{Initial Bring-Up Procedure}
+\begin{enumerate}
+    \item Power the base station and confirm it boots cleanly.
+    \item Power the node and confirm the sensor begins transmitting.
+    \item Verify the base station receives the packet and forwards it to ThingSpeak.
+    \item Open the channel dashboard and confirm the first record appears.
+    \item Validate the raw soil moisture, temperature, voltage, RSSI, and SNR values.
+    \item Record the commissioning date and any calibration offsets.
+\end{enumerate}
+
+\subsection{Interpretation of Live Dashboard Fields}
+The website charts render the following observables per node:
+\begin{itemize}
+    \item raw soil moisture chart
+    \item temperature chart
+    \item battery voltage chart
+    \item received signal strength chart
+    \item SNR chart
+\end{itemize}
+
+The network summary page also shows cross-node visualizations for volumetric soil moisture and ground temperature. The node pages on the website are hard-linked to the current ThingSpeak channels, so update both the embedded channel IDs and the CSV download map when a node changes.
+
+\section{Reconnect and Recovery Guidelines}
+\subsection{Normal Reconnect Behavior}
+Nodes should reconnect automatically after transient power loss or radio interruption. The field node maintains a backlog of up to 10 unsent records. Every transmission includes the entire backlog, and the base station acknowledges a batch with \texttt{ACKTIME:<epoch>} after logging the records. If the backlog reaches 10 records, the field node forces a reboot. If two ACKs are missed in a row, the field node also forces a reboot.
+
+Recommended operational behavior:
+\begin{itemize}
+    \item retry after a short randomized backoff to avoid synchronized collisions
+    \item preserve the most recent measurement until transmission succeeds
+    \item log a transmission error counter or status flag when retries fail
+    \item restore the previous publish cadence after reconnect
+\end{itemize}
+
+\subsection{Operator Recovery Steps}
+If a node stops reporting:
+\begin{enumerate}
+    \item verify battery voltage and local power integrity
+    \item check whether the base station is online and on the correct Wi-Fi network
+    \item inspect the enclosure for water ingress or a failed seal
+    \item confirm the antenna is attached and not physically damaged
+    \item power-cycle the node only after collecting any visible diagnostics
+    \item if the node resumes, confirm that timestamps continue normally and that no duplicate records were created
+    \item if the backlog overflowed, expect a forced reboot as part of the recovery path
+\end{enumerate}
+
+\subsection{Forced Single-Point Resend by Reset Button}
+The current firmware does not expose a special user command for a one-shot resend. The supported operator action is to press the node's reset button, which reboots the field node, re-synchronizes time, and causes the next transmission cycle to start from a clean runtime state. Because the first slot after boot skips the node-offset delay, this is the nearest supported behavior to an immediate resend. Use this when:
+\begin{itemize}
+    \item a transmission was missed
+    \item the base station was offline during a sample
+    \item you need a single current reading immediately after servicing
+\end{itemize}
+
+Do not use repeated reset presses as a substitute for fixing a persistent connectivity issue. If you need a true manual resend button, add an explicit command handler to the field-node firmware rather than relying on the boot behavior.
+
+\section{SD Card Contents for the Base Station}
+If the base station uses a microSD card, treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
+\begin{itemize}
+    \item \texttt{soil.csv}: sensor rows in the format \texttt{timestamp,battery,node\_id,rssi,snr,<teros-values...>}
+    \item \texttt{events.csv}: boot, NTP, no-Wi-Fi, time-request, time-sync, packet-received, and timeout events
+    \item a readme or manifest that explains the directory layout and any local conventions
+    \item calibration references and revision history, if you maintain them locally
+\end{itemize}
+
+Recommended SD card structure:
+\begin{verbatim}
+/README.txt
+/config/
+/logs/
+/soil.csv
+/events.csv
+/calibration/
+/revisions/
+\end{verbatim}
+
+The README in \texttt{sm\_code/README.md} says the project targets a single SD card, with base-station events appended to \texttt{events.csv} and sensor readings saved to \texttt{soil.csv}. Document any additional directories only if you actually write them in your deployment.
+
+\section{Scaling and Adding More Nodes}
+\subsection{Node Addition Workflow}
+To add a new node to the network:
+\begin{enumerate}
+    \item assign the next available node number
+    \item create a new ThingSpeak channel and keys
+    \item duplicate the node firmware or configuration template
+    \item update the field node's \texttt{NODE\_ID} constant in \texttt{sm\_code/field-node/field-node.ino}
+    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array and the node guard in \texttt{sendCsvToThingSpeak}
+    \item update the website read-key map in \texttt{assets/download.js}
+    \item update the channel IDs and widgets in \texttt{projects/soil-moisture-network.html}
+    \item update any calibration constants or node-specific offsets
+    \item label the physical hardware and enclosure with the node number
+    \item record the MAC address, install location, and commissioning date
+    \item update the website download helper and any dashboards
+\end{enumerate}
+
+\subsection{Scale-Out Design Rules}
+The network should be structured so each new node is a repeatable unit with minimal firmware changes. Recommended rules:
+\begin{itemize}
+    \item use identical field ordering across nodes
+    \item keep per-node channel IDs in a separate configuration table
+    \item isolate node-specific calibration constants from shared code
+    \item reserve room in the dashboard and CSV tooling for future channels
+    \item document the node label physically on the housing and in software
+    \item keep the base-station node limit in sync with the website read-key map and the ThingSpeak channel map
+\end{itemize}
+
+\subsection{Dashboard and Website Updates}
+When a node is added or removed, update:
+\begin{itemize}
+    \item the live ThingSpeak channel list
+    \item the CSV download node map
+    \item the network overview charts if they are node-specific
+    \item any summary tables on the project page
+\end{itemize}
+
+The current website helper already includes a four-node map and a combined export path, so node 4 can be onboarded by replacing the placeholder read key and verifying the channel ID.
+
+\subsection{Code Edit Points}
+When you need to change the system, these are the files that matter most:
+\begin{itemize}
+    \item \texttt{sm\_code/field-node/field-node.ino}: change \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
+    \item \texttt{sm\_code/base-station/base-station.ino}: change the Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
+    \item \texttt{assets/download.js}: change read keys, node IDs, CSV column naming, or download behavior.
+    \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
+    \item \texttt{sm\_code/README.md}: update the operational description when firmware behavior changes.
+\end{itemize}
+
+If you change the node count or the payload structure, update the base station first, then the website download helper, then the dashboard page.
+
+\section{Maintenance}
+\subsection{Routine Inspection}
+Inspect each field node at a regular interval and record:
+\begin{itemize}
+    \item enclosure integrity
+    \item gasket compression and silicone condition
+    \item desiccant saturation
+    \item cable strain and abrasion
+    \item corrosion at connectors or fasteners
+    \item battery health
+    \item probe burial condition and soil contact
+\end{itemize}
+
+\subsection{Desiccant and Seal Maintenance}
+Replace desiccant before it becomes saturated. Replace or dry the packs according to the product instructions. If the enclosure shows condensation, open the unit only long enough to inspect, then re-seal and replace the desiccant.
+
+Inspect silicone sealant for:
+\begin{itemize}
+    \item gaps around penetrations
+    \item cracks from thermal cycling
+    \item partial debonding from the enclosure material
+    \item contamination from dirt or oils
+\end{itemize}
+
+\subsection{Calibration and Verification}
+Whenever a node is serviced:
+\begin{itemize}
+    \item verify the soil moisture reading against a known reference if available
+    \item compare temperature and battery readings across nodes for sanity
+    \item confirm RSSI and SNR are within the expected link margin
+    \item document any offset correction in the revision log
+\end{itemize}
+
+\section{Troubleshooting}
+\subsection{No Data on ThingSpeak}
+Potential causes include:
+\begin{itemize}
+    \item wrong write key
+    \item wrong channel ID
+    \item no Wi-Fi connectivity
+    \item base station not authenticated to the network
+    \item node not powered or not transmitting
+    \item incorrect field order in the payload
+\end{itemize}
+
+\subsection{Data Appears but Is Corrupted}
+Check for:
+\begin{itemize}
+    \item swapped sensor leads
+    \item incorrect sensor power voltage
+    \item loose ground connection
+    \item serial framing or field parsing issues
+    \item stale or partial transmissions after a reset
+\end{itemize}
+
+\subsection{Low RSSI or High Packet Loss}
+Inspect antenna placement, enclosure shielding, distance to the gateway, and the battery supply. If the radio supports adjustable power, document the current transmit setting before changing it.
+
+\section{Security and Configuration Control}
+\begin{itemize}
+    \item keep write keys private
+    \item rotate any key committed by mistake
+    \item use separate read keys for the public website download path
+    \item record every node/channel change in a revision log
+    \item preserve old hardware labels when revising a node so historical data remains traceable
+\end{itemize}
+
+\section{Revision Log Template}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.14\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} >{\raggedright\arraybackslash}p{0.52\linewidth}}
+\toprule
+Date & Revision & Notes \\
+\midrule
+\endfirsthead
+\toprule
+Date & Revision & Notes \\
+\midrule
+\endhead
+\todo{Fill in} & \todo{Fill in} & Initial deployment or latest known hardware revision. \\
+\bottomrule
+\end{longtable}
+
+\section{Appendix A: Current Public Website References}
+The current site uses the following project resources and live endpoints:
+\begin{itemize}
+    \item Soil moisture network page: \link{soil-moisture-network.html}
+    \item ThingSpeak node dashboards for Node 1, Node 2, and Node 3, plus the CSV export node selector for Node 4
+    \item Combined CSV download helper in the website assets
+    \item MATLAB visualizations for network-level soil moisture and temperature views
+\end{itemize}
+
+\section{Appendix B: Recommended Commissioning Data Sheet}
+Use the following checklist for each installed node:
+\begin{itemize}
+    \item node number
+    \item channel ID
+    \item write key location
+    \item read key location
+    \item sensor serial number
+    \item enclosure serial number or label
+    \item install date
+    \item install location
+    \item MAC address
+    \item battery voltage at install
+    \item notes on soil type and probe depth
+    \item photo reference path
+\end{itemize}
+
+\section{Appendix C: Items to Fill In}
+The following project-specific details should be completed with the exact revision information from the hardware and firmware source of truth:
+\begin{itemize}
+    \item exact node MCU or radio board part number
+    \item exact base station board part number
+    \item exact charger, regulator, and power path parts
+    \item exact enclosure model and cable gland models
+    \item exact TEROS 12 wiring order used on the installed revision
+    \item exact microSD card size and file structure used by firmware
+    \item exact uM msetup provisioning steps if the interface is changed in the future
+\end{itemize}
+
+\end{document}
