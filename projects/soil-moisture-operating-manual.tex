@@ -299,21 +299,12 @@ Document the battery chemistry, rated output, protection circuit, and connector 
 
 \section{Wi-Fi and Base Station Commissioning}
 \subsection{Connecting to Wi-Fi with uM msetup}
-Use the University of Michigan setup workflow referenced in this project as the standard way to provision Wi-Fi credentials on the base station when that workflow is available. The current firmware does not implement a captive portal; it simply joins the open SSID \texttt{MSetup} at boot with \texttt{WiFi.begin("MSetup")}. 
+Use the University of Michigan MSetup workflow to authorize the base station on the network. For detailed portal steps, see \href{https://documentation.its.umich.edu/node/946}{UMich MSetup documentation}. In the MSetup portal, register the base station under \textbf{Other Device}, then enter the base station MAC address so the \texttt{MSetup} network will automatically allow the connection.
 
-General process:
-\begin{enumerate}
-    \item Power the base station and confirm the serial log shows Wi-Fi startup against \texttt{MSetup}.
-    \item If your deployment requires a prior registration step, add the ESP8266 MAC address to the approved list before leaving the lab.
-    \item Confirm the base station receives an IP address and can fetch NTP time from \texttt{pool.ntp.org}.
-    \item Confirm the clock is set and the firmware logs \texttt{NTP} or \texttt{NOWIFI} in \texttt{events.csv}.
-    \item Reboot once and confirm the behavior is persistent.
-\end{enumerate}
-
-If the uM msetup process changes, update this section with the exact screen-by-screen instructions and the current provisioning URL or captive portal behavior. If the network is not available, the base station still logs locally to the SD card, but ThingSpeak publishing is skipped until Wi-Fi returns.
+The base station controller currently in use has MAC address \texttt{08-3A-8D-DO-BE-89}. After registration, power the base station and confirm it joins \texttt{MSetup}, receives an IP address, and can fetch NTP time from \texttt{pool.ntp.org}.
 
 \subsection{MAC Address Registration}
-Record the base station MAC address in the site commissioning log. If network access depends on allow-listing, the MAC address should be added before leaving the lab or before final field install. The current base station is an ESP8266, so document the single Wi-Fi interface MAC address rather than separate 2.4 GHz and 5 GHz addresses.
+Record the registered MAC address in the site commissioning log. If components are changed on the base station, register the updated MAC address in MSetup before redeployment. The updated MAC address can be retrieved through serial monitor commands when the microcontroller is connected by USB cable.
 
 \subsection{API Keys in Base Station Code}
 When adding API keys to base station code, use the following pattern:
