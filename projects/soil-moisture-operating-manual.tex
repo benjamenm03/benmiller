@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{makecell}
 \usepackage{caption}
+\graphicspath{{assets/images/}{../assets/images/}}
 
 \hypersetup{
     colorlinks=true,
@@ -42,12 +43,17 @@
 
 \newcommand{\link}[1]{\url{#1}}
 \newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+\newcommand{\firmwarerepo}{\href{https://github.com/benjamenm03/teros12-LoRa}{teros12-LoRa GitHub repository}}
+\newcommand{\firmwarereadme}{\href{https://github.com/benjamenm03/teros12-LoRa/blob/main/README.md}{teros12-LoRa README}}
+\newcommand{\fieldfirmware}{\href{https://github.com/benjamenm03/teros12-LoRa/blob/main/field-node/field-node.ino}{field-node/field-node.ino}}
+\newcommand{\basefirmware}{\href{https://github.com/benjamenm03/teros12-LoRa/blob/main/base-station/base-station.ino}{base-station/base-station.ino}}
 
 \begin{document}
 
 \begin{center}
     {\LARGE \textbf{Soil Moisture Network Operating Manual}}\\[0.4em]
     {\large Installation, maintenance, and scaling guide}\\[0.75em]
+    \includegraphics[width=0.62\linewidth]{sm_node_pic.png}\\[0.9em]
     Version 1.0\\
     Prepared for the Soil Moisture Network\\
     \today
@@ -71,7 +77,7 @@ This network currently consists of three field nodes, each equipped with a TEROS
 
 \section{System Overview}
 \subsection{High-Level Architecture}
-Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. In the current codebase, the field node is an Arduino Nano Classic running \emph{sm\_code/field-node/field-node.ino} and the base station is an ESP8266 NodeMCU v3 running \emph{sm\_code/base-station/base-station.ino}. The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public project page renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
+Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public project page renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
 
 The current website references these live node channels:
 \begin{itemize}
@@ -81,7 +87,7 @@ The current website references these live node channels:
     \item Node 4: \link{https://thingspeak.mathworks.com/channels/2996911} (used in the CSV download tool)
 \end{itemize}
 
-The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for the network behavior is the firmware plus the website helpers in \emph{assets/download.js} and \emph{projects/soil-moisture-network.html}.
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{} and \firmwarereadme{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{projects/soil-moisture-network.html}.
 
 \subsection{Data Products}
 The network currently produces:
@@ -127,7 +133,7 @@ RTC module & Adafruit DS3231 Precision RTC breakout & 3013 & \href{https://www.d
 RTC backup battery & 3 V CR1220 coin cell for RTC module & CR1220 & \href{https://www.digikey.com/en/products/detail/fdk-america-inc/CR1220/435282}{DigiKey SY033-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/6163/supplier52002.pdf}{datasheet} \\
 Teros series resistor & 510 \(\Omega\), 1\%, 1/4 W, 1206 resistor listed in series with TEROS 12 line & RC1206FR-07510RL & \href{https://www.digikey.com/en/products/detail/yageo/RC1206FR-07510RL/728887}{DigiKey 311-510FRCT-ND} / \href{https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L}{datasheet} \\
 Teros pull resistor & 100 k\(\Omega\), 1\%, 1/4 W, 1206 resistor listed parallel with Arduino on TEROS 12 line & RC1206FR-07100KL & \href{https://www.digikey.com/en/products/detail/yageo/RC1206FR-07100KL/728739}{DigiKey 311-100KFRCT-ND} / \href{https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L}{datasheet} \\
-Teros line capacitor & 220 pF, 50 V, C0G/NP0, 1206 ceramic capacitor listed in parallel with 100 k\(\Omega\) resistor & C1206C221J5GACTU & \href{https://www.digikey.com/en/products/detail/kemet/C1206C221J5GACTU/411837}{DigiKey 399-C1206C221J5GACTUCT-ND} / \href{https://www.yageogroup.com/content/datasheet/asset/file/KEM_C1003_C0G_SMD}{datasheet} \\
+Teros line capacitor & 220 pF, 50 V, C0G/NP0, 1206 ceramic capacitor listed in parallel with 100 k\(\Omega\) resistor & \makecell[l]{C1206C221\\J5GACTU} & \href{https://www.digikey.com/en/products/detail/kemet/C1206C221J5GACTU/411837}{DigiKey 399-C1206C221J5GACTUCT-ND} / \href{https://www.yageogroup.com/content/datasheet/asset/file/KEM_C1003_C0G_SMD}{datasheet} \\
 \midrule
 \multicolumn{4}{l}{\textbf{Base Station Components}} \\
 \midrule
@@ -181,7 +187,7 @@ For consistency across nodes, use the following order in ThingSpeak fields:
     \item field6: SNR in dB
 \end{enumerate}
 
-This ordering matches the current upload code in \texttt{sm\_code/base-station/base-station.ino}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, with field 3 carrying soil temperature in $^\circ$C, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
+This ordering matches the current upload code in \basefirmware{}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, with field 3 carrying soil temperature in $^\circ$C, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
 
 \subsection{API Key Management}
 ThingSpeak requires separate credentials for reading and writing. The operational rule is:
@@ -202,7 +208,7 @@ The current website download helper maps node labels to ThingSpeak channel IDs a
 Before field deployment, verify the following:
 \begin{itemize}
     \item the sensor probe is identified and labeled with the correct node number
-    \item the field node is compiled with the correct \texttt{NODE\_ID} in \texttt{sm\_code/field-node/field-node.ino}
+    \item the field node is compiled with the correct \texttt{NODE\_ID} in \fieldfirmware{}
     \item the base station has the correct entry in the \texttt{THINGSPEAK\_API\_KEYS} array
     \item the base station can reach the \texttt{MSetup} Wi-Fi network and any required local network services
     \item all enclosures are dry, clean, and fully sealed
@@ -388,7 +394,7 @@ Recommended SD card structure:
 /revisions/
 \end{verbatim}
 
-The README in \texttt{sm\_code/README.md} says the project targets a single SD card, with base-station events appended to \texttt{events.csv} and sensor readings saved to \texttt{soil.csv}. Document any additional directories only if you actually write them in your deployment.
+The \firmwarereadme{} says the project targets a single SD card, with base-station events appended to \texttt{events.csv} and sensor readings saved to \texttt{soil.csv}. Document any additional directories only if you actually write them in your deployment.
 
 \section{Scaling and Adding More Nodes}
 \subsection{Node Addition Workflow}
@@ -432,11 +438,11 @@ The current website helper already includes a four-node map and a combined expor
 \subsection{Code Edit Points}
 When you need to change the system, these are the files that matter most:
 \begin{itemize}
-    \item field-node firmware: change \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
-    \item base-station firmware: change the Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
+    \item field-node firmware (public repo): \fieldfirmware{} for \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
+    \item base-station firmware (public repo): \basefirmware{} for Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
     \item \texttt{assets/download.js}: change read keys, node IDs, CSV column naming, or download behavior.
     \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
-    \item \texttt{sm\_code/README.md}: update the operational description when firmware behavior changes.
+    \item firmware documentation: \firmwarereadme{} for operational description updates.
 \end{itemize}
 
 If you change the node count or the payload structure, update the base station first, then the website download helper, then the dashboard page.
