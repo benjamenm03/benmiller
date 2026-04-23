@@ -27,7 +27,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Soil Moisture Node Operating Manual}
+\lhead{Soil Moisture Network Operating Manual}
 \rhead{\thepage}
 \setlength{\headheight}{14pt}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -46,8 +46,8 @@
 \begin{document}
 
 \begin{center}
-    {\LARGE \textbf{Soil Moisture Node Operating Manual}}\\[0.4em]
-    {\large Installation, commissioning, maintenance, and scaling guide}\\[0.75em]
+    {\LARGE \textbf{Soil Moisture Network Operating Manual}}\\[0.4em]
+    {\large Installation, maintenance, and scaling guide}\\[0.75em]
     Version 1.0\\
     Prepared for the Soil Moisture Network\\
     \today
@@ -57,13 +57,13 @@
 \newpage
 
 \section{Purpose and Scope}
-This document is the operating manual for the soil moisture node network currently published on the website project page and ThingSpeak dashboards. It is written to support field installation, commissioning, troubleshooting, maintenance, and future expansion of the network.
+This manual provides instructions for the installation, maintenance, and scaling of the soil moisture sensor network. It covers hardware setup, software configuration, data management, and troubleshooting procedures.
 
-The network currently publishes per-node data for four channels in the website download tool and at least three live dashboard nodes on the project page. The downloadable data pipeline expects the following fields from ThingSpeak feeds:
+This network currently consists of three field nodes, each equipped with a TEROS 12 soil moisture/temperature sensor, and a base station that collects data for publishing to ThingSpeak. The current data pipeline expects the following packets from each node, with the corresponding field mapping in ThingSpeak:
 \begin{itemize}
-    \item field1: first Teros payload value
-    \item field2: second Teros payload value
-    \item field3: third Teros payload value
+    \item field1: first Teros payload value (Bus ID)
+    \item field2: second Teros payload value (raw soil moisture)
+    \item field3: third Teros payload value (soil temperature in $^\circ$C)
     \item field4: battery voltage
     \item field5: received signal strength indicator (RSSI)
     \item field6: signal-to-noise ratio (SNR)
@@ -155,13 +155,13 @@ For consistency across nodes, use the following order in ThingSpeak fields:
 \begin{enumerate}
     \item field1: first Teros payload value
     \item field2: second Teros payload value
-    \item field3: third Teros payload value
+    \item field3: soil temperature in $^\circ$C
     \item field4: battery voltage
     \item field5: RSSI in dBm
     \item field6: SNR in dB
 \end{enumerate}
 
-This ordering matches the current upload code in \texttt{sm\_code/base-station/base-station.ino}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
+This ordering matches the current upload code in \texttt{sm\_code/base-station/base-station.ino}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, with field 3 carrying soil temperature in $^\circ$C, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
 
 \subsection{API Key Management}
 ThingSpeak requires separate credentials for reading and writing. The operational rule is:
