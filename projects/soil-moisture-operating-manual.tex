@@ -50,6 +50,12 @@
 
 \begin{document}
 
+\begin{titlepage}
+\thispagestyle{empty}
+\noindent\makebox[\textwidth][r]{\includegraphics[width=1.1in]{qr.png}}
+
+\vspace*{1.25in}
+
 \begin{center}
     {\LARGE \textbf{Soil Moisture Network Operating Manual}}\\[0.4em]
     {\large Installation, maintenance, and scaling guide}\\[0.75em]
@@ -58,6 +64,8 @@
     Prepared for the Soil Moisture Network\\
     \today
 \end{center}
+
+\end{titlepage}
 
 \tableofcontents
 \newpage
@@ -525,18 +533,17 @@ Date & Revision & Notes \\
 \midrule
 \endhead
 July 10, 2025 & Remote logging system installed & Remote logging system installed for the network. \\
-April 22, 2026 & Field node 3 relocated & Field node 3 was moved from its original location to a new location northeast of the original site to accommodate Matthaei Botanical Gardens staff. \\
-\todo{Fill in} & \todo{Fill in} & Initial deployment or latest known hardware revision. \\
+April 22, 2026 & Field node 3 relocated & Field node 3 was moved from its original location to a new location northeast of the original site to accommodate Matthaei Botanical Gardens staff operations. \\
 \bottomrule
 \end{longtable}
 
 \section{Appendix A: Current Public Website References}
 The current site uses the following project resources and live endpoints:
 \begin{itemize}
-    \item Soil moisture network page: \link{soil-moisture-network.html}
-    \item ThingSpeak node dashboards for Node 1, Node 2, and Node 3, plus the CSV export node selector for Node 4
-    \item Combined CSV download helper in the website assets
-    \item MATLAB visualizations for network-level soil moisture and temperature views
+    \item Soil moisture network page: \href{https://benmiller.us/projects/soil-moisture-network.html}{Soil Moisture Network}
+    \item ThingSpeak node dashboards: Node 1 \href{https://thingspeak.mathworks.com/channels/2996904}{dashboard}, Node 2 \href{https://thingspeak.mathworks.com/channels/2996908}{dashboard}, Node 3 \href{https://thingspeak.mathworks.com/channels/2996910}{dashboard}
+    \item Combined CSV download helper
+    \item MATLAB visualizations
 \end{itemize}
 
 \section{Appendix B: Recommended Commissioning Data Sheet}
