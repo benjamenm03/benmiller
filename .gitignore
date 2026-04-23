@@ -40,6 +40,8 @@ build/
 .cache/
 .tmp/
 tmp/
+*.aux
+*.fdb_latexmk
 
 # Coverage
 coverage/
