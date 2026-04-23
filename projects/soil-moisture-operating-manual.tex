@@ -210,7 +210,7 @@ In the current firmware, write keys live in the base-station \texttt{THINGSPEAK\
 Store keys only where they are used. Never hard-code a write key in a public repository. If you add, replace, or rotate a node, update both the base-station write-key array and the website read-key map so the channel remains usable from the upload path and the download path.
 
 \subsection{Website Download Tool Configuration}
-The current website download helper maps node labels to ThingSpeak channel IDs and read keys. If you add or replace a node, update the node map in the JavaScript helper so the CSV download tool continues to work. The present mapping includes four nodes, and the combined download path aggregates all channels into a single CSV export. The helper expects each channel to expose the same field ordering described above.
+The current visualizing and download tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding further nodes can be done by adding additional ThingSpeak channels, but to keep the plots and data arrangement looking clean in the custom webpage format, the source code would need to be updated. The helper expects each channel to expose the same field ordering described above.
 
 \section{Node Installation}
 \subsection{Pre-Deployment Checklist}
@@ -306,15 +306,6 @@ The base station controller currently in use has MAC address \texttt{08-3A-8D-DO
 \subsection{MAC Address Registration}
 Record the registered MAC address in the site commissioning log. If components are changed on the base station, register the updated MAC address in MSetup before redeployment. The updated MAC address can be retrieved through serial monitor commands when the microcontroller is connected by USB cable.
 
-\subsection{API Keys in Base Station Code}
-When adding API keys to base station code, use the following pattern:
-\begin{itemize}
-    \item keep keys in a configuration file or environment store where possible
-    \item separate node-specific keys from global configuration
-    \item rotate credentials if a device is replaced or a technician leaves the project
-    \item verify the code path that submits the write request after every firmware or configuration change
-\end{itemize}
-
 In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array in the base-station firmware. The order is fixed: slot 1 goes to node 1, slot 2 to node 2, slot 3 to node 3, and slot 4 to node 4. The uploader rejects node IDs outside 1--4. If you need a fifth node, enlarge the array, update the node guard in the uploader, and expand the website download map.
 
 \section{Commissioning and First Data Upload}
@@ -325,7 +316,6 @@ In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array 
     \item Verify the base station receives the packet and forwards it to ThingSpeak.
     \item Open the channel dashboard and confirm the first record appears.
     \item Validate the raw soil moisture, temperature, voltage, RSSI, and SNR values.
-    \item Record the commissioning date and any calibration offsets.
 \end{enumerate}
 
 \subsection{Interpretation of Live Dashboard Fields}
@@ -344,57 +334,29 @@ The network summary page also shows cross-node visualizations for volumetric soi
 \subsection{Normal Reconnect Behavior}
 Nodes should reconnect automatically after transient power loss or radio interruption. The field node maintains a backlog of up to 10 unsent records. Every transmission includes the entire backlog, and the base station acknowledges a batch with \texttt{ACKTIME:<epoch>} after logging the records. If the backlog reaches 10 records, the field node forces a reboot. If two ACKs are missed in a row, the field node also forces a reboot.
 
-Recommended operational behavior:
-\begin{itemize}
-    \item retry after a short randomized backoff to avoid synchronized collisions
-    \item preserve the most recent measurement until transmission succeeds
-    \item log a transmission error counter or status flag when retries fail
-    \item restore the previous publish cadence after reconnect
-\end{itemize}
-
 \subsection{Operator Recovery Steps}
 If a node stops reporting:
 \begin{enumerate}
-    \item verify battery voltage and local power integrity
+    \item verify battery voltage
     \item check whether the base station is online and on the correct Wi-Fi network
     \item inspect the enclosure for water ingress or a failed seal
     \item confirm the antenna is attached and not physically damaged
-    \item power-cycle the node only after collecting any visible diagnostics
+    \item power-cycle the node, or use the reset button for a forced single-point resend
     \item if the node resumes, confirm that timestamps continue normally and that no duplicate records were created
     \item if the backlog overflowed, expect a forced reboot as part of the recovery path
 \end{enumerate}
 
 \subsection{Forced Single-Point Resend by Reset Button}
-The current firmware does not expose a special user command for a one-shot resend. The supported operator action is to press the node's reset button, which reboots the field node, re-synchronizes time, and causes the next transmission cycle to start from a clean runtime state. Because the first slot after boot skips the node-offset delay, this is the nearest supported behavior to an immediate resend. Use this when:
-\begin{itemize}
-    \item a transmission was missed
-    \item the base station was offline during a sample
-    \item you need a single current reading immediately after servicing
-\end{itemize}
+The current firmware does not expose a special user command for a one-shot resend. The supported operator action is to press the node's reset button, which reboots the field node, re-synchronizes time, and causes the next transmission cycle to start from a clean runtime state. Because the first slot after boot skips the node-offset delay, this is the nearest supported behavior to an immediate resend. Use this when you need a single current reading immediately after servicing.
 
-Do not use repeated reset presses as a substitute for fixing a persistent connectivity issue. If you need a true manual resend button, add an explicit command handler to the field-node firmware rather than relying on the boot behavior.
+Do not use repeated reset presses as a substitute for fixing a persistent connectivity issue.
 
 \section{SD Card Contents for the Base Station}
-If the base station uses a microSD card, treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
+The base station uses a microSD card, treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
 \begin{itemize}
     \item \texttt{soil.csv}: sensor rows in the format \texttt{timestamp,battery,node\_id,rssi,snr,...}
     \item \texttt{events.csv}: boot, NTP, no-Wi-Fi, time-request, time-sync, packet-received, and timeout events
-    \item a readme or manifest that explains the directory layout and any local conventions
-    \item calibration references and revision history, if you maintain them locally
 \end{itemize}
-
-Recommended SD card structure:
-\begin{verbatim}
-/README.txt
-/config/
-/logs/
-/soil.csv
-/events.csv
-/calibration/
-/revisions/
-\end{verbatim}
-
-The \firmwarereadme{} says the project targets a single SD card, with base-station events appended to \texttt{events.csv} and sensor readings saved to \texttt{soil.csv}. Document any additional directories only if you actually write them in your deployment.
 
 \section{Scaling and Adding More Nodes}
 \subsection{Node Addition Workflow}
@@ -404,25 +366,10 @@ To add a new node to the network:
     \item create a new ThingSpeak channel and keys
     \item duplicate the node firmware or configuration template
     \item update the field-node \texttt{NODE\_ID} constant
-    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array and node guard
-    \item update the website read-key map in \texttt{assets/download.js}
-    \item update the channel IDs and widgets in \texttt{projects/soil-moisture-network.html}
-    \item update any calibration constants or node-specific offsets
-    \item label the physical hardware and enclosure with the node number
-    \item record the MAC address, install location, and commissioning date
-    \item update the website download helper and any dashboards
+    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array
+    \item confirm any node-offsets or timing parameters are correct for the new node
+    \item update the website download helper and any dashboards to reflect the addition of the new node
 \end{enumerate}
-
-\subsection{Scale-Out Design Rules}
-The network should be structured so each new node is a repeatable unit with minimal firmware changes. Recommended rules:
-\begin{itemize}
-    \item use identical field ordering across nodes
-    \item keep per-node channel IDs in a separate configuration table
-    \item isolate node-specific calibration constants from shared code
-    \item reserve room in the dashboard and CSV tooling for future channels
-    \item document the node label physically on the housing and in software
-    \item keep the base-station node limit in sync with the website read-key map and the ThingSpeak channel map
-\end{itemize}
 
 \subsection{Dashboard and Website Updates}
 When a node is added or removed, update:
@@ -433,7 +380,7 @@ When a node is added or removed, update:
     \item any summary tables on the project page
 \end{itemize}
 
-The current website helper already includes a four-node map and a combined export path, so node 4 can be onboarded by replacing the placeholder read key and verifying the channel ID.
+The current visualizing tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding additional nodes is straightforward at the ThingSpeak level, but if you want the plots and data layout to stay nicely arranged in the custom webpage format, the source code for the site visualizers and downloaders needs to be updated. Feel free to scrub the source code from the current page, host it on your own GitHub pages site, and customize the layout as needed for your node count and channel arrangement.
 
 \subsection{Code Edit Points}
 When you need to change the system, these are the files that matter most:
@@ -444,8 +391,6 @@ When you need to change the system, these are the files that matter most:
     \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
     \item firmware documentation: \firmwarereadme{} for operational description updates.
 \end{itemize}
-
-If you change the node count or the payload structure, update the base station first, then the website download helper, then the dashboard page.
 
 \section{Maintenance}
 \subsection{Routine Inspection}
