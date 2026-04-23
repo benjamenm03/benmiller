@@ -36,12 +36,19 @@ node_modules/
 
 # Build / cache outputs
 dist/
-build/
+build/**
+!build/latex/
+build/latex/**
+!build/latex/soil-moisture-operating-manual.pdf
+projects/build/**
 .cache/
 .tmp/
 tmp/
 *.aux
 *.fdb_latexmk
+*.toc
+*.out
+*.synctex.gz
 
 # Coverage
 coverage/
