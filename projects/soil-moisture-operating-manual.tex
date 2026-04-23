@@ -78,17 +78,9 @@ This network currently consists of three field nodes, each equipped with a TEROS
 
 \section{System Overview}
 \subsection{High-Level Architecture}
-Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public project page renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
+Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
 
-The current website references these live node channels:
-\begin{itemize}
-    \item Node 1: \link{https://thingspeak.mathworks.com/channels/2996904}
-    \item Node 2: \link{https://thingspeak.mathworks.com/channels/2996908}
-    \item Node 3: \link{https://thingspeak.mathworks.com/channels/2996910}
-    \item Node 4: \link{https://thingspeak.mathworks.com/channels/2996911} (used in the CSV download tool)
-\end{itemize}
-
-The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{} and \firmwarereadme{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{projects/soil-moisture-network.html}.
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source form here: \href{../assets/download.js}{download.js source} and \href{../assets/soil-moisture-network.html}{soil-moisture-network.html source}.
 
 \subsection{Data Products}
 The network currently produces:
