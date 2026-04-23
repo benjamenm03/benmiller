@@ -29,6 +29,7 @@
 \fancyhf{}
 \lhead{Soil Moisture Node Operating Manual}
 \rhead{\thepage}
+\setlength{\headheight}{14pt}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
@@ -98,6 +99,9 @@ The network currently produces:
 This section is intended to be the master procurement list. Where exact revision-specific part numbers are not present in the repository, the row is marked for completion. The code files identify the board families used in the current build even when the repository does not expose a vendor part number.
 
 \subsection{Primary Field Sensor and Node Hardware}
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.20\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} >{\raggedright\arraybackslash}p{0.26\linewidth}}
 \toprule
 Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
@@ -107,30 +111,31 @@ Subsystem & Suggested part / description & Manufacturer part number & Procuremen
 Subsystem & Suggested part / description & Manufacturer part number & Procurement link \\
 \midrule
 \endhead
-Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \link{https://www.digikey.com/en/products?keywords=TEROS%2012} \\
-Node controller & Arduino Nano Classic, field node controller & \todo{Exact board SKU} & \link{https://www.digikey.com/en/products?keywords=Arduino%20Nano%20Classic} \\
-Wireless radio / modem & HopeRF RFM95-class 915 MHz LoRa module used on the field node & \todo{Exact RFM95 variant} & \link{https://www.digikey.com/en/products?keywords=RFM95%20915%20MHz} \\
-Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \link{https://metergroup.com/environment/products/teros-12/} \\
+Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \href{https://www.digikey.com/en/products?keywords=TEROS\%2012}{DigiKey} \\
+Node controller & Arduino Nano Classic, field node controller & \todo{Exact board SKU} & \href{https://www.digikey.com/en/products?keywords=Arduino\%20Nano\%20Classic}{DigiKey} \\
+Wireless radio / modem & HopeRF RFM95-class 915 MHz LoRa module used on the field node & \todo{Exact RFM95 variant} & \href{https://www.digikey.com/en/products?keywords=RFM95\%20915\%20MHz}{DigiKey} \\
+Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{datasheet} \\
 Battery pack & Field battery source read on A0 after wake-up & \todo{Battery chemistry / pack SKU} & \todo{Add DigiKey or vendor link} \\
-Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU} & \link{https://www.digikey.com/en/products?keywords=ESP8266%20NodeMCU%20v3} \\
-microSD card & High-endurance microSD card in the SD adapter attached to the base station & \todo{Exact card SKU} & \link{https://www.digikey.com/en/products?keywords=high%20endurance%20microSD} \\
+Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU} & \href{https://www.digikey.com/en/products?keywords=ESP8266\%20NodeMCU\%20v3}{DigiKey} \\
+microSD card & High-endurance microSD card in the SD adapter attached to the base station & \todo{Exact card SKU} & \href{https://www.digikey.com/en/products?keywords=high\%20endurance\%20microSD}{DigiKey} \\
 microSD adapter & Base-station SD adapter on bit-banged SPI (CS D4, MOSI D7, MISO D6, SCK D5) & \todo{Exact adapter SKU} & \todo{Add DigiKey or vendor link} \\
 Enclosure & Weather-resistant enclosure with cable glands & \todo{Exact enclosure SKU} & \todo{Add DigiKey or vendor link} \\
 Cable glands & Sized for sensor lead, battery lead, and antenna pass-throughs & \todo{Exact gland sizes} & \todo{Add DigiKey or vendor link} \\
-Desiccant & Silica gel packs or equivalent replacement packs & \todo{Exact pack SKU} & \link{https://www.digikey.com/en/products?keywords=silica%20gel%20desiccant} \\
-Sealant & Neutral-cure silicone for housing penetrations and gasket assist & \todo{Exact sealant SKU} & \link{https://www.digikey.com/en/products?keywords=neutral%20cure%20silicone} \\
+Desiccant & Silica gel packs or equivalent replacement packs & \todo{Exact pack SKU} & \href{https://www.digikey.com/en/products?keywords=silica\%20gel\%20desiccant}{DigiKey} \\
+Sealant & Neutral-cure silicone for housing penetrations and gasket assist & \todo{Exact sealant SKU} & \href{https://www.digikey.com/en/products?keywords=neutral\%20cure\%20silicone}{DigiKey} \\
 Antenna & Matching antenna for the field LoRa radio used on the revision & \todo{Exact antenna SKU} & \todo{Add DigiKey or vendor link} \\
 Mounting hardware & Stakes, brackets, fasteners, stand-offs, and strain relief & \todo{Exact hardware list} & \todo{Add DigiKey or vendor link} \\
 \bottomrule
 \end{longtable}
+\endgroup
 
 \subsection{Datasheet and Reference Links}
 Use the exact revision of each component as the authoritative record for the build. Recommended sources:
 \begin{itemize}
-    \item Manufacturer datasheet for the TEROS 12 sensor: \link{https://metergroup.com/environment/products/teros-12/}
-    \item DigiKey search for TEROS 12 and accessory hardware: \link{https://www.digikey.com/en/products?keywords=TEROS%2012}
-    \item ThingSpeak documentation and API references: \link{https://www.mathworks.com/help/thingspeak/}
-    \item ThingSpeak REST API overview: \link{https://www.mathworks.com/help/thingspeak/rest-api.html}
+    \item \href{https://metergroup.com/environment/products/teros-12/}{TEROS 12 datasheet}
+    \item \href{https://www.digikey.com/en/products?keywords=TEROS\%2012}{DigiKey TEROS 12 search}
+    \item \href{https://www.mathworks.com/help/thingspeak/}{ThingSpeak docs}
+    \item \href{https://www.mathworks.com/help/thingspeak/rest-api.html}{ThingSpeak REST API}
 \end{itemize}
 
 \textbf{Note:} The repository does not include a full revision-specific BOM for the node electronics. Populate the table above with the exact MCU, radio, regulator, charger, enclosure, and sensor accessory part numbers used on the build you are documenting. Keep this document as the master record for each hardware revision.
@@ -165,7 +170,7 @@ ThingSpeak requires separate credentials for reading and writing. The operationa
     \item read key: used by the website CSV download tool and any private analytics scripts
 \end{itemize}
 
-In the current firmware, write keys live in the \texttt{THINGSPEAK\_API\_KEYS[4]} array in \texttt{sm\_code/base-station/base-station.ino}. The node firmware does not contain ThingSpeak credentials; it only sends LoRa packets to the base station. The website read keys live in \texttt{assets/download.js} inside the \texttt{NODE\_INFO} object.
+In the current firmware, write keys live in the base-station \texttt{THINGSPEAK\_API\_KEYS[4]} array. The node firmware does not contain ThingSpeak credentials; it only sends LoRa packets to the base station. Website read keys live in \texttt{assets/download.js} inside \texttt{NODE\_INFO}.
 
 Store keys only where they are used. Never hard-code a write key in a public repository. If you add, replace, or rotate a node, update both the base-station write-key array and the website read-key map so the channel remains usable from the upload path and the download path.
 
@@ -284,7 +289,7 @@ When adding API keys to base station code, use the following pattern:
     \item verify the code path that submits the write request after every firmware or configuration change
 \end{itemize}
 
-In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array in \texttt{sm\_code/base-station/base-station.ino}. The order is fixed: slot 1 goes to node 1, slot 2 to node 2, slot 3 to node 3, and slot 4 to node 4. The uploader rejects node IDs outside 1--4. If you need a fifth node, enlarge the array, update the node guard in \texttt{sendCsvToThingSpeak}, and expand the website download helper's \texttt{NODE\_INFO} map.
+In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array in the base-station firmware. The order is fixed: slot 1 goes to node 1, slot 2 to node 2, slot 3 to node 3, and slot 4 to node 4. The uploader rejects node IDs outside 1--4. If you need a fifth node, enlarge the array, update the node guard in the uploader, and expand the website download map.
 
 \section{Commissioning and First Data Upload}
 \subsection{Initial Bring-Up Procedure}
@@ -346,7 +351,7 @@ Do not use repeated reset presses as a substitute for fixing a persistent connec
 \section{SD Card Contents for the Base Station}
 If the base station uses a microSD card, treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
 \begin{itemize}
-    \item \texttt{soil.csv}: sensor rows in the format \texttt{timestamp,battery,node\_id,rssi,snr,<teros-values...>}
+    \item \texttt{soil.csv}: sensor rows in the format \texttt{timestamp,battery,node\_id,rssi,snr,...}
     \item \texttt{events.csv}: boot, NTP, no-Wi-Fi, time-request, time-sync, packet-received, and timeout events
     \item a readme or manifest that explains the directory layout and any local conventions
     \item calibration references and revision history, if you maintain them locally
@@ -372,8 +377,8 @@ To add a new node to the network:
     \item assign the next available node number
     \item create a new ThingSpeak channel and keys
     \item duplicate the node firmware or configuration template
-    \item update the field node's \texttt{NODE\_ID} constant in \texttt{sm\_code/field-node/field-node.ino}
-    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array and the node guard in \texttt{sendCsvToThingSpeak}
+    \item update the field-node \texttt{NODE\_ID} constant
+    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array and node guard
     \item update the website read-key map in \texttt{assets/download.js}
     \item update the channel IDs and widgets in \texttt{projects/soil-moisture-network.html}
     \item update any calibration constants or node-specific offsets
@@ -407,8 +412,8 @@ The current website helper already includes a four-node map and a combined expor
 \subsection{Code Edit Points}
 When you need to change the system, these are the files that matter most:
 \begin{itemize}
-    \item \texttt{sm\_code/field-node/field-node.ino}: change \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
-    \item \texttt{sm\_code/base-station/base-station.ino}: change the Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
+    \item field-node firmware: change \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
+    \item base-station firmware: change the Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
     \item \texttt{assets/download.js}: change read keys, node IDs, CSV column naming, or download behavior.
     \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
     \item \texttt{sm\_code/README.md}: update the operational description when firmware behavior changes.
