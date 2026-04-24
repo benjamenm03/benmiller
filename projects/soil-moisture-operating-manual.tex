@@ -37,8 +37,8 @@
 \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
 \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
 
-\setlist[itemize]{leftmargin=1.25em,itemsep=0.25em,topsep=0.35em}
-\setlist[enumerate]{leftmargin=1.5em,itemsep=0.25em,topsep=0.35em}
+\setlist[itemize]{leftmargin=1.25em,itemsep=0.20em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.20em,topsep=0.35em}
 \renewcommand{\arraystretch}{1.15}
 
 \newcommand{\link}[1]{\url{#1}}
@@ -80,15 +80,15 @@ This network currently consists of three field nodes, each equipped with a TEROS
 \subsection{High-Level Architecture}\label{subsec:high-level}
 Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
 
-The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source text form here: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)} and \href{https://benmiller.us/assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}. These are helpful for setting up your own custom visualization webpage, and serve as the foundation for the benmiller.us version.
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the download helper script and the soil-moisture-network page source. These files can be downloaded directly in raw source text form here: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)} and \href{https://benmiller.us/assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}. These are helpful for setting up your own custom visualization webpage and serve as the foundation for the benmiller.us site.
 
 \clearpage
 \section{Base Station Maintenance and Configuration}
-\subsection{Hardware Reference}
+\subsection{Rendering}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.32\linewidth]{Base Station.png}
-    \caption{Base station rendering used for maintenance orientation.}
+    \caption{Base station rendering with omnidirectional antenna.}
 \end{figure}
 
 \begin{figure}[p]
@@ -110,10 +110,10 @@ Subsystem & Suggested part / description & Manufacturer part number & Procuremen
 Subsystem & Suggested part / description & Manufacturer part number & Procurement/Datasheet link \\
 \midrule
 \endhead
-Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts.pdf}{datasheet} \\
+Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & Adafruit 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-radio-breakouts.pdf}{datasheet} \\
 Antenna & TE Connectivity Linx compact right-angle whip antenna, 915 MHz, SMA male & ANT-916-CW-RCS-SMA & \href{https://www.digikey.com/en/products/detail/te-connectivity-linx/ANT-916-CW-RCS-SMA/4477921}{DigiKey 343-ANT-916-CW-RCS-SMA-ND} / \href{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=CW-RCS_Series&DocType=Data+Sheet&DocLang=English&DocFormat=pdf&PartCntxt=ANT-916-CW-RCS-SMA}{datasheet} \\
 Base station controller & Aceirmc wireless internet development board, ESP8266 NodeMCU V3 compatible & B0828L4743 & \href{https://www.amazon.com/Aceirmc-Wireless-Internet-Development-Compatible/dp/B0828L4743/ref=sr_1_3?dib=eyJ2IjoiMSJ9.0zpBY3ctzYZ5oC22_qABCtJCMUkrZsQUMfgxuURGVHv4A8gQnkJ_MdW1RziaLu5pLf5_HP_4LPG7M53UCuq_0dy_YLRbQx3ylrQ8QsIxFC7L15JvSze5ZcUWpazgkmCdhnFlxiEzJRK0Cvfw-AXrCW5LjheNkT7hAsoyqS_7_8I8q-N9kwBY6eNSJghh303HpzA9sPVLyV_2k_yVfIvCaJPwz8dTVv2o6mY1H2olSpQ.8-SAG9Sro6ofjUYvZZLRh9cLFkNFqx95xgyUyzbbWpU&dib_tag=se&keywords=nodemcu%2Besp8266%2Bv3&qid=1751408395&sr=8-3&th=1}{Amazon purchase page} \\
-microSD adapter & Adafruit MicroSD Card Breakout Board, 5V or 3V logic compatible & 254 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/254/5353571}{DigiKey 1528-1462-ND} / \href{https://github.com/adafruit/MicroSD-breakout-board}{reference} \\
+microSD adapter & Adafruit MicroSD Card Breakout Board, 5V or 3V logic compatible & Adafruit 254 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/254/5353571}{DigiKey 1528-1462-ND} / \href{https://github.com/adafruit/MicroSD-breakout-board}{reference} \\
 Barrel jack connector & 2.0 mm ID \(\times\) 5.5 mm OD SMT power jack for 5V input adapter & PJ-002AH-SMT-TR & \href{https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/PJ-002AH-SMT-TR/2620537}{DigiKey CP-002AHPJCT-ND} / \href{https://www.cuidevices.com/product/resource/pj-002ah-smt-tr.pdf}{datasheet} \\
 Wall power adapter & 5V AC/DC wall adapter used with the barrel jack power input & 16-00014 & \href{https://www.digikey.com/en/products/detail/tensility-international-corp/16-00014/3448224}{DigiKey 839-16-00014-ND} / \href{https://tensility.s3.us-west-2.amazonaws.com/uploads/pdffiles/16-00014.pdf}{datasheet} \\
 Status LED & Blue SMD indicator LED for base-station status indication & LTST-C230TBKT & \href{https://www.digikey.com/en/products/detail/lite-on-inc/LTST-C230TBKT/385847}{DigiKey 160-1889-1-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/807/LTST-C230TBKT.pdf}{datasheet} \\
@@ -149,7 +149,7 @@ The base-station software source of truth is:
 \end{itemize}
 
 \subsection{How to Edit Base Station Setup in Code}
-When changing deployment setup, edit these items in \basefirmware{}:
+When changing deployment setup, you may (but need not) edit these items in \basefirmware{}:
 \begin{enumerate}
     \item Wi-Fi configuration values used to connect to the site network.
     \item \texttt{THINGSPEAK\_API\_KEYS[4]} write-key assignments for node IDs 1--4.
@@ -159,15 +159,19 @@ When changing deployment setup, edit these items in \basefirmware{}:
 \end{enumerate}
 
 After changing any field mapping, update website download and visualization code at the same time so plots and CSV exports remain consistent.
+For ThingSpeak credential handling and key placement rules, see \hyperref[subsec:api-key-management]{API Key Management}.
+For exact node-scaling code edits (including \texttt{NODE\_ID}, \texttt{THINGSPEAK\_API\_KEYS}, and node-ID guard changes), see \hyperref[sec:scaling-nodes]{Scaling and Adding More Nodes}.
 
 \subsection{Wi-Fi Commissioning Procedure}
 \begin{enumerate}
-    \item Register the base-station MAC address in the UM MSetup portal.
-    \item Power the base station and confirm association to \texttt{MSetup}.
-    \item Verify the base station receives an IP address.
-    \item Verify NTP sync to \texttt{pool.ntp.org}.
+    \item Follow the University of Michigan MSetup workflow and register the base station as \textbf{Other Device}. For portal details, see \href{https://documentation.its.umich.edu/node/946}{UMich MSetup documentation}.
+    \item Enter the base station MAC address so \texttt{MSetup} authorizes the controller.
+    \item Power the base station and confirm it joins \texttt{MSetup}.
+    \item Verify the base station receives an IP address and successfully syncs time with \texttt{pool.ntp.org}.
     \item Confirm a packet upload appears in ThingSpeak after a node transmission.
 \end{enumerate}
+
+The base station controller currently in use has MAC address \texttt{08-3A-8D-DO-BE-89}. If you replace the controller, update the MAC address in the MSetup portal and re-register the device. The MAC address can be found by connecting to the base station's serial console and pushing a command to print the MAC address.
 
 \subsection{SD Card Verification Procedure}
 The base station should continuously maintain:
@@ -180,7 +184,6 @@ During maintenance, pull the card and verify both files are present, non-empty, 
 
 \subsection{Base Station Service Checklist}
 \begin{itemize}
-    \item verify antenna connection and enclosure seal integrity
     \item verify power input and boot sequence
     \item verify network join and NTP sync
     \item verify SD writes for both \texttt{/soil.csv} and \texttt{/events.csv}
@@ -189,11 +192,11 @@ During maintenance, pull the card and verify both files are present, non-empty, 
 
 \clearpage
 \section{Field Node Maintenance and Configuration}
-\subsection{Hardware Reference}
+\subsection{Rendering}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.32\linewidth]{Field Nodes.png}
-    \caption{Field node rendering used for maintenance orientation.}
+    \caption{Field node rendering with omnidirectional antenna.}
 \end{figure}
 
 \begin{figure}[p]
@@ -217,7 +220,7 @@ Subsystem & Suggested part / description & Manufacturer part number & Procuremen
 \endhead
 Soil probe & METER Group TEROS 12 soil moisture sensor & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{METER Group product page} \\
 Node controller & Arduino Nano Classic, field node controller & A000005 & \href{https://www.digikey.com/en/products?keywords=Arduino\%20Nano\%20Classic}{DigiKey search} \\
-Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts.pdf}{datasheet} \\
+Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-radio-breakouts.pdf}{datasheet} \\
 Temperature / Teros interface & TEROS 12 on SDI-12, read by the field node on D2 & TEROS 12 & \href{https://metergroup.com/environment/products/teros-12/}{METER Group product page} \\
 Battery pack & Field battery source & D-size ER34615 non-rechargeable & - \\
 Boost converter & Adafruit MiniBoost 5V @ 1A for boosting battery voltage to regulated 5V rail & 4654 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/4654/13687995}{DigiKey 1528-4654-ND} / \href{https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/445/4654_Web.pdf}{datasheet} \\
@@ -358,7 +361,7 @@ For consistency across nodes, use the following order in ThingSpeak fields:
 
 This ordering matches the current upload code in \basefirmware{}. The uploader posts JSON to ThingSpeak's \texttt{/update.json} endpoint, stamps the sample time in UTC, and maps the Teros values into fields 1--3, with field 2 carrying raw soil moisture, field 3 carrying soil temperature in $^\circ$C, battery into field 4, RSSI into field 5, and SNR into field 6. If you change the field layout, update the base-station uploader, the website CSV download helper, and any MATLAB visualizations at the same time.
 
-\subsection{API Key Management}
+\subsection{API Key Management}\label{subsec:api-key-management}
 ThingSpeak requires separate credentials for reading and writing. The operational rule is:
 \begin{itemize}
     \item write key: used by the base station when publishing live data to ThingSpeak
@@ -371,17 +374,6 @@ Store keys only where they are used. Never hard-code a write key in a public rep
 
 \subsection{Website Download Tool Configuration}
 The current visualizing and download tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding further nodes can be done by adding additional ThingSpeak channels, but to keep the plots and data arrangement looking clean in the custom webpage format, the source code would need to be updated. See the \hyperref[subsec:high-level]{System Overview section} for links to the website source code files (download.js and soil-moisture-network.html) if you'd like to make your own site and expand the network. The helper expects each channel to expose the same field ordering described above.
-
-\section{Wi-Fi and Base Station Commissioning}
-\subsection{Connecting to Wi-Fi with MSetup}\label{subsec:wifi-msetup}
-Use the University of Michigan MSetup workflow to authorize the base station on the network. For detailed portal steps, see \href{https://documentation.its.umich.edu/node/946}{UMich MSetup documentation}. In the MSetup portal, register the base station under \textbf{Other Device}, then enter the base station MAC address so the \texttt{MSetup} network will automatically allow the connection.
-
-The base station controller currently in use has MAC address \texttt{08-3A-8D-DO-BE-89}. After registration, power the base station and confirm it joins \texttt{MSetup}, receives an IP address, and can fetch NTP time from \texttt{pool.ntp.org}.
-
-\subsection{MAC Address Registration}
-Record the registered MAC address in the site commissioning log. If components are changed on the base station, register the updated MAC address in MSetup before redeployment. The updated MAC address can be retrieved through serial monitor commands when the microcontroller is connected by USB cable.
-
-In the current code, edit the four-element \texttt{THINGSPEAK\_API\_KEYS} array in the base-station firmware. The order is fixed: slot 1 goes to node 1, slot 2 to node 2, slot 3 to node 3, and slot 4 to node 4. The uploader rejects node IDs outside 1--4. If you need a fifth node, enlarge the array, update the node guard in the uploader, and expand the website download map.
 
 \section{Commissioning and First Data Upload}
 \subsection{Initial Bring-Up Procedure}
@@ -427,23 +419,33 @@ The current firmware does not expose a special user command for a one-shot resen
 Do not use repeated reset presses as a substitute for fixing a persistent connectivity issue.
 
 \section{SD Card Contents for the Base Station}
-The base station uses a microSD card, treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
+The base station uses a microSD card; treat it as the local operational log and offline recovery media. The current firmware writes directly to \texttt{/soil.csv} and \texttt{/events.csv} on the SD card. The SD card should contain:
 \begin{itemize}
     \item \texttt{soil.csv}: sensor rows in the format \texttt{timestamp,battery,node\_id,rssi,snr,...}
     \item \texttt{events.csv}: boot, NTP, no-Wi-Fi, time-request, time-sync, packet-received, and timeout events
 \end{itemize}
 
-\section{Scaling and Adding More Nodes}
+\section{Scaling and Adding More Nodes}\label{sec:scaling-nodes}
 \subsection{Node Addition Workflow}
 To add a new node to the network:
 \begin{enumerate}
-    \item assign the next available node number
-    \item create a new ThingSpeak channel and keys
-    \item duplicate the node firmware or configuration template
-    \item update the field-node \texttt{NODE\_ID} constant
-    \item update the base-station \texttt{THINGSPEAK\_API\_KEYS} array
-    \item confirm any node-offsets or timing parameters are correct for the new node
-    \item update the website download helper and any dashboards to reflect the addition of the new node
+    \item Assign the next available node ID (for example, 4, 5, 6, ...).
+    \item Create a ThingSpeak channel for that node and collect its Write API key.
+    \item Create one field-node firmware copy per additional hardware unit and edit the field-node sketch file (\texttt{field-node.ino}):
+    \begin{itemize}
+        \item At line 22, change \texttt{constexpr uint8\_t NODE\_ID = 1;} to a unique value for that specific node (for example, 2, 3, 4).
+        \item This \texttt{NODE\_ID} is embedded in transmitted messages (\texttt{REQT:<id>} and \texttt{DATA:<id>,...}).
+        \item This \texttt{NODE\_ID} also controls transmit staggering: each node waits \texttt{45 * NODE\_ID} seconds before transmitting to reduce over-the-air collisions.
+    \end{itemize}
+    \item Flash each modified \texttt{field-node.ino} build to its corresponding Arduino Nano unit.
+    \item Edit \texttt{base-station/base-station.ino} so the base station accepts and uploads the new node ID(s):
+    \begin{itemize}
+        \item \texttt{THINGSPEAK\_API\_KEYS} array (lines 37--42): the current code is sized for 4 nodes. Increase the array size from \texttt{[4]} to the new node count, and add one Write API key entry per new node.
+        \item Node ID guard (line 98): update \texttt{if (nodeId == 0 || nodeId > 4) return false;} so the upper bound matches your new maximum node ID.
+        \item If this guard is not updated, packets from new nodes can still be logged to SD, but their ThingSpeak uploads will be rejected.
+    \end{itemize}
+    \item Update website download helpers and dashboard mappings for the added channel(s).
+    \item Commission each new node and confirm both SD logging and ThingSpeak uploads are working.
 \end{enumerate}
 
 \subsection{Dashboard and Website Updates}
@@ -455,14 +457,14 @@ When a node is added or removed, update:
     \item any summary tables on the project page
 \end{itemize}
 
-The current visualizing tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding additional nodes is straightforward at the ThingSpeak level, but if you want the plots and data layout to stay nicely arranged in the custom webpage format, the source code for the site visualizers and downloaders needs to be updated. Feel free to scrub the source code from the current page, host it on your own GitHub pages site, and customize the layout as needed for your node count and channel arrangement.
+The current visualizing tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding additional nodes is straightforward at the ThingSpeak level, but if you want the plots and data layout to stay nicely arranged in the custom webpage format, the source code for the site visualizers and downloaders needs to be updated. Feel free to grab the source code from the current page, host it on your own GitHub Pages site, and customize the layout as needed for your node count and channel arrangement.
 
 \subsection{Code Edit Points}
 When you need to change the system, these are the files that matter most:
 \begin{itemize}
     \item field-node firmware (public repo): \fieldfirmware{} for \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
     \item base-station firmware (public repo): \basefirmware{} for Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
-    \item \texttt{assets/download.js}: change read keys, node IDs, CSV column naming, or download behavior.
+    \item Download helper script source: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)} for read keys, node IDs, CSV column naming, or download behavior.
     \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
     \item firmware documentation: \firmwarereadme{} for operational description updates.
 \end{itemize}
@@ -490,7 +492,7 @@ Check for:
 \end{itemize}
 
 \subsection{Low RSSI or High Packet Loss}
-Inspect antenna placement; for omni-directional antennas, keep them in the same plane between the base station and field nodes. Also check enclosure shielding, distance to the gateway, and the battery supply.
+Inspect antenna placement; for omnidirectional antennas, keep them in the same plane between the base station and field nodes. Also check enclosure shielding, distance to the gateway, and the battery supply.
 
 \section{Revision Log Template}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.14\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} >{\raggedright\arraybackslash}p{0.52\linewidth}}
@@ -512,8 +514,8 @@ The current site uses the following project resources and live endpoints:
 \begin{itemize}
     \item Soil moisture network page: \href{https://benmiller.us/projects/soil-moisture-network.html}{Soil Moisture Network}
     \item ThingSpeak node dashboards: Node 1 \href{https://thingspeak.mathworks.com/channels/2996904}{dashboard}, Node 2 \href{https://thingspeak.mathworks.com/channels/2996908}{dashboard}, Node 3 \href{https://thingspeak.mathworks.com/channels/2996910}{dashboard}
-    \item Combined CSV download helper
-    \item MATLAB visualizations
+    \item Combined CSV download helper source: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)}
+    \item MATLAB visualizations: \href{https://thingspeak.mathworks.com/apps/matlab_visualizations/631513}{soil moisture plot} and \href{https://thingspeak.mathworks.com/apps/matlab_visualizations/631516}{temperature plot}
 \end{itemize}
 
 \end{document}
