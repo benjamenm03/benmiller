@@ -66,15 +66,15 @@
 \section{Purpose and Scope}
 This manual provides instructions for the installation, maintenance, and scaling of the soil moisture sensor network. It covers hardware setup, software configuration, data management, and troubleshooting procedures.
 
-This network currently consists of three field nodes, each equipped with a TEROS 12 soil moisture/temperature sensor, and a base station that collects data for publishing to ThingSpeak. The current data pipeline expects the following packets from each node, with the corresponding field mapping in ThingSpeak:
+This network currently consists of three field nodes, each equipped with a TEROS 12 soil moisture/temperature sensor, and a base station that collects data for publishing to ThingSpeak. The main items you may edit, replace, expand, or remove are:
 \begin{itemize}
-    \item field1: first Teros payload value (Bus ID)
-    \item field2: second Teros payload value (raw soil moisture)
-    \item field3: third Teros payload value (soil temperature in $^\circ$C)
-    \item field4: battery voltage
-    \item field5: received signal strength indicator (RSSI)
-    \item field6: signal-to-noise ratio (SNR)
+    \item base-station firmware, which controls Wi-Fi access, SD logging, ThingSpeak uploads, and packet handling
+    \item field-node firmware, which controls node identity, transmit timing, sensor reads, and LoRa messaging
+    \item ThingSpeak channels and API keys, which control where data is published and how it is read back (this is the main storage location for data)
+    \item custom data visualizing and downloading webpages, which control how live charts and CSV exports are displayed (benmiller.us is an example of a custom webpage that reads from ThingSpeak channels and renders live charts and CSV exports)
 \end{itemize}
+
+The field layout used in ThingSpeak is described later in the document, along with the current packet format and upload mapping.
 
 \section{System Overview}
 \subsection{High-Level Architecture}\label{subsec:high-level}
