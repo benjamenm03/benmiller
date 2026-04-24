@@ -77,10 +77,10 @@ This network currently consists of three field nodes, each equipped with a TEROS
 \end{itemize}
 
 \section{System Overview}
-\subsection{High-Level Architecture}
-Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station or gateway. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
+\subsection{High-Level Architecture}\label{subsec:high-level}
+Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
 
-The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it safely. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source text form here: \href{../assets/download-source.txt}{download.js source (txt)} and \href{../assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}.
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source text form here: \href{../assets/download-source.txt}{download.js source (txt)} and \href{../assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}. These are helpful for setting up your own custom visualization webpage, and serve as the foundation for the benmiller.us version.
 
 \subsection{Data Products}
 The network currently produces:
@@ -149,7 +149,7 @@ Mounting hardware & Pole or post mounting brackets, stainless fasteners, and cla
 \endgroup
 
 \subsection{Datasheet and Reference Links}
-Use the exact revision of each component as the authoritative record for the build. Recommended sources:
+Some recommended sources for setting up ThingSpeak and working with the Teros 12 sensor:
 \begin{itemize}
     \item \href{https://metergroup.com/environment/products/teros-12/}{TEROS 12 datasheet}
     \item \href{https://www.mathworks.com/help/thingspeak/}{ThingSpeak docs}
@@ -199,7 +199,7 @@ In the current firmware, write keys live in the base-station \texttt{THINGSPEAK\
 Store keys only where they are used. Never hard-code a write key in a public repository. If you add, replace, or rotate a node, update both the base-station write-key array and the website read-key map so the channel remains usable from the upload path and the download path.
 
 \subsection{Website Download Tool Configuration}
-The current visualizing and download tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding further nodes can be done by adding additional ThingSpeak channels, but to keep the plots and data arrangement looking clean in the custom webpage format, the source code would need to be updated. The helper expects each channel to expose the same field ordering described above.
+The current visualizing and download tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding further nodes can be done by adding additional ThingSpeak channels, but to keep the plots and data arrangement looking clean in the custom webpage format, the source code would need to be updated. See the \hyperref[subsec:high-level]{System Overview section} for links to the website source code files (download.js and soil-moisture-network.html). The helper expects each channel to expose the same field ordering described above.
 
 \section{Node Installation}
 \subsection{Pre-Deployment Checklist}
@@ -212,7 +212,7 @@ Before field deployment, verify the following:
     \item all enclosures are dry, clean, and fully sealed
     \item desiccant packs are fresh
     \item all connectors are strain-relieved and waterproofed as designed
-    \item battery voltage is within the acceptable commissioning range
+    \item battery voltage is within an acceptable range
 \end{itemize}
 
 \subsection{Code-Controlled Hardware Map}
