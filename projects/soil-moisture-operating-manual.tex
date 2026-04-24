@@ -74,8 +74,6 @@ This network currently consists of three field nodes, each equipped with a TEROS
     \item custom data visualizing and downloading webpages, which control how live charts and CSV exports are displayed (benmiller.us is an example of a custom webpage that reads from ThingSpeak channels and renders live charts and CSV exports)
 \end{itemize}
 
-The field layout used in ThingSpeak is described later in the document, along with the current packet format and upload mapping.
-
 \section{System Overview}
 \subsection{High-Level Architecture}\label{subsec:high-level}
 Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
