@@ -80,7 +80,7 @@ This network currently consists of three field nodes, each equipped with a TEROS
 \subsection{High-Level Architecture}\label{subsec:high-level}
 Each soil moisture node is a remote field station that measures soil moisture and temperature, then transmits data wirelessly to a base station. The software loaded onto field nodes and base stations is maintained in the public \firmwarerepo{} (field node: \fieldfirmware{}, base station: \basefirmware{}). The base station handles SD logging, Wi-Fi access, ThingSpeak publishing, and UTC timestamping. The public \href{https://benmiller.us/projects/cygnss.html}{project page} renders live ThingSpeak widgets and charts for individual nodes and network-level summary plots.
 
-The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source text form here: \href{../assets/download-source.txt}{download.js source (txt)} and \href{../assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}. These are helpful for setting up your own custom visualization webpage, and serve as the foundation for the benmiller.us version.
+The website also uses a ThingSpeak API feed download endpoint with per-node read keys in the JavaScript download helper. The manual below describes how to maintain that setup and how to extend it. The source of truth for node and base-station firmware behavior is the public \firmwarerepo{}, while website behavior is defined by the helpers in \emph{assets/download.js} and \emph{assets/soil-moisture-network.html}. These files can be downloaded directly in raw source text form here: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)} and \href{https://benmiller.us/assets/soil-moisture-network-source.txt}{soil-moisture-network.html source (txt)}. These are helpful for setting up your own custom visualization webpage, and serve as the foundation for the benmiller.us version.
 
 \clearpage
 \section{Base Station Maintenance and Configuration}
@@ -112,7 +112,7 @@ Subsystem & Suggested part / description & Manufacturer part number & Procuremen
 \endhead
 Wireless radio / modem & Adafruit RFM95W LoRa Radio Transceiver Breakout, 915 MHz & 3072 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/3072/5772438}{DigiKey 1528-1667-ND} / \href{https://cdn-learn.adafruit.com/downloads/pdf/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts.pdf}{datasheet} \\
 Antenna & TE Connectivity Linx compact right-angle whip antenna, 915 MHz, SMA male & ANT-916-CW-RCS-SMA & \href{https://www.digikey.com/en/products/detail/te-connectivity-linx/ANT-916-CW-RCS-SMA/4477921}{DigiKey 343-ANT-916-CW-RCS-SMA-ND} / \href{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=CW-RCS_Series&DocType=Data+Sheet&DocLang=English&DocFormat=pdf&PartCntxt=ANT-916-CW-RCS-SMA}{datasheet} \\
-Base station controller & ESP8266 NodeMCU v3 base station & \todo{Exact NodeMCU module SKU not present in supplied DigiKey list} & \href{https://www.digikey.com/en/products?keywords=ESP8266\%20NodeMCU\%20v3}{DigiKey search} \\
+Base station controller & Aceirmc wireless internet development board, ESP8266 NodeMCU V3 compatible & B0828L4743 & \href{https://www.amazon.com/Aceirmc-Wireless-Internet-Development-Compatible/dp/B0828L4743/ref=sr_1_3?dib=eyJ2IjoiMSJ9.0zpBY3ctzYZ5oC22_qABCtJCMUkrZsQUMfgxuURGVHv4A8gQnkJ_MdW1RziaLu5pLf5_HP_4LPG7M53UCuq_0dy_YLRbQx3ylrQ8QsIxFC7L15JvSze5ZcUWpazgkmCdhnFlxiEzJRK0Cvfw-AXrCW5LjheNkT7hAsoyqS_7_8I8q-N9kwBY6eNSJghh303HpzA9sPVLyV_2k_yVfIvCaJPwz8dTVv2o6mY1H2olSpQ.8-SAG9Sro6ofjUYvZZLRh9cLFkNFqx95xgyUyzbbWpU&dib_tag=se&keywords=nodemcu%2Besp8266%2Bv3&qid=1751408395&sr=8-3&th=1}{Amazon purchase page} \\
 microSD adapter & Adafruit MicroSD Card Breakout Board, 5V or 3V logic compatible & 254 & \href{https://www.digikey.com/en/products/detail/adafruit-industries-llc/254/5353571}{DigiKey 1528-1462-ND} / \href{https://github.com/adafruit/MicroSD-breakout-board}{reference} \\
 Barrel jack connector & 2.0 mm ID \(\times\) 5.5 mm OD SMT power jack for 5V input adapter & PJ-002AH-SMT-TR & \href{https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/PJ-002AH-SMT-TR/2620537}{DigiKey CP-002AHPJCT-ND} / \href{https://www.cuidevices.com/product/resource/pj-002ah-smt-tr.pdf}{datasheet} \\
 Wall power adapter & 5V AC/DC wall adapter used with the barrel jack power input & 16-00014 & \href{https://www.digikey.com/en/products/detail/tensility-international-corp/16-00014/3448224}{DigiKey 839-16-00014-ND} / \href{https://tensility.s3.us-west-2.amazonaws.com/uploads/pdffiles/16-00014.pdf}{datasheet} \\
@@ -124,7 +124,21 @@ LED current-limit resistor & 100 \(\Omega\), 1\%, 1/4 W, 1206 resistor for the b
 
 \subsection{Base Station Custom PCB Files}
 \begin{itemize}
-    \item Base Station Custom PCB: \href{../assets/PCBs/BaseStation_Rev1.zip}{BaseStation\_Rev1.zip}
+    \item Base Station Custom PCB: \href{https://benmiller.us/assets/PCBs/BaseStation_Rev1.zip}{BaseStation\_Rev1.zip}
+\end{itemize}
+
+\subsection{3D Printed Parts}
+The base station includes an optional 3D printable housing and matching door for users who want to print the enclosure instead of buying a separate box.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.55\linewidth]{3d_printable_housing.png}
+    \caption{Base station 3D printable housing preview.}
+\end{figure}
+
+\begin{itemize}
+    \item Base station housing STL: \href{https://benmiller.us/assets/base_station.stl}{base\_station.stl}
+    \item Base station door STL: \href{https://benmiller.us/assets/base_station_door.stl}{base\_station\_door.stl}
 \end{itemize}
 
 \subsection{Code and Configuration Files}
@@ -222,8 +236,23 @@ Teros line capacitor & 220 pF, 50 V, C0G/NP0, 1206 ceramic capacitor listed in p
 
 \subsection{Field Node Custom PCB Files}
 \begin{itemize}
-    \item Field Node Custom PCB: \href{../assets/PCBs/FieldNode_Rev2.zip}{FieldNode\_Rev2.zip}
+    \item Field Node Custom PCB: \href{https://benmiller.us/assets/PCBs/FieldNode_Rev2.zip}{FieldNode\_Rev2.zip}
 \end{itemize}
+
+\subsection{3D Printed Parts}
+The field node includes an optional 3D printable mounting bracket that is designed to fit a PJ864L enclosure.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.55\linewidth]{3d_printable_bracket.png}
+    \caption{Field node 3D printable mounting bracket preview.}
+\end{figure}
+
+\begin{itemize}
+    \item Field node mounting bracket STL: \href{https://benmiller.us/assets/mounting_plate.stl}{mounting\_plate.stl}
+\end{itemize}
+
+The PJ864L enclosure part number is included here so the bracket can be matched to the correct enclosure before printing or installation.
 
 \subsection{Code and Configuration Files}
 The field-node software source of truth is:
