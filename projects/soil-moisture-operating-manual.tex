@@ -271,6 +271,15 @@ For each physical node deployment:
     \item confirm the base station has a matching ThingSpeak write-key slot for that \texttt{NODE\_ID}
 \end{enumerate}
 
+\subsection{TEROS Wiring Order}
+When terminating the TEROS sensor lead into the field-node terminal block, keep the conductors in the same order shown in the installed reference photo below. In the current build, the three TEROS wires land top-to-bottom as brown, yellow, and the bare/silver conductor. Reinstall the lead in that same order after any field repair or sensor replacement.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.24\linewidth]{teros_wiring.png}
+    \caption{TEROS terminal block wiring reference.}
+\end{figure}
+
 \subsection{Packet Format and Transport Behavior}
 The node sends LoRa records in the form:
 \begin{itemize}
@@ -454,7 +463,7 @@ When a node is added or removed, update:
     \item any summary tables on the project page
 \end{itemize}
 
-The current visualizing tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding additional nodes is straightforward at the ThingSpeak level, but if you want the plots and data layout to stay nicely arranged in the custom webpage format, the source code for the site visualizers and downloaders needs to be updated. Feel free to grab the source code from the current page, host it on your own GitHub Pages site, and customize the layout as needed for your node count and channel arrangement.
+The current visualizing tools at \href{https://benmiller.us}{benmiller.us} are set up for 3 nodes. Adding additional nodes is straightforward at the ThingSpeak level, but if you want the plots and data layout to stay nicely arranged in the custom webpage format, the source code for the site visualizers and downloaders needs to be updated. Feel free to grab the source code from the previous sections, host it on your own GitHub Pages site, and customize the layout as needed for your node count and channel arrangement.
 
 \subsection{Code Edit Points}
 When you need to change the system, these are the files that matter most:
@@ -462,8 +471,8 @@ When you need to change the system, these are the files that matter most:
     \item field-node firmware (public repo): \fieldfirmware{} for \texttt{NODE\_ID}, timing, backlog logic, LoRa parameters, or the Teros read routine.
     \item base-station firmware (public repo): \basefirmware{} for Wi-Fi SSID, ThingSpeak write keys, SD logging behavior, or packet handling.
     \item Download helper script source: \href{https://benmiller.us/assets/download-source.txt}{download.js source (txt)} for read keys, node IDs, CSV column naming, or download behavior.
-    \item \texttt{projects/soil-moisture-network.html}: change the embedded dashboards and channel widgets.
-    \item firmware documentation: \firmwarereadme{} for operational description updates.
+    \item Embedded dashboards and channel widgets.
+    \item Firmware documentation: \firmwarereadme{} for operational description updates.
 \end{itemize}
 
 \section{Troubleshooting}
@@ -478,7 +487,7 @@ Potential causes include:
     \item incorrect field order in the payload
 \end{itemize}
 
-\subsection{Data Appears but Is Corrupted}
+\subsection{Data Appears But Is Corrupted}
 Check for:
 \begin{itemize}
     \item swapped sensor leads
