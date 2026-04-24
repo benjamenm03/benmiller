@@ -293,15 +293,6 @@ The base station confirms receipt with:
 
 Payload values are mapped to ThingSpeak field order through the base-station uploader.
 
-\subsection{Field Node Error Handling and Recovery}
-Current firmware behavior includes:
-\begin{itemize}
-    \item backlog buffer up to 10 unsent records
-    \item forced reboot when backlog reaches 10
-    \item forced reboot after two consecutive missed ACK cycles
-    \item reset-button recovery path for immediate post-service resend behavior
-\end{itemize}
-
 \subsection{Field Node Service Checklist}
 \begin{itemize}
     \item verify battery voltage and polarity
