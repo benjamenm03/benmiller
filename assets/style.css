@@ -12,12 +12,12 @@ body {
     background-color: var(--background-color);
 }
 a {
-    color: var(--secondary-color);
+    color: #4b7fc4;
     text-decoration: none;
 }
 
 a:hover {
-    color: #e0b800;
+    color: #3c6cab;
     text-decoration: underline;
 }
 .header {
@@ -109,8 +109,14 @@ a:hover {
     margin-top: 20px;
 }
 .footer a {
+    color: var(--secondary-color);
     text-decoration: none;
     font-weight: bold;
+}
+
+.footer a:hover {
+    color: #e0b800;
+    text-decoration: underline;
 }
 
 
