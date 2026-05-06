@@ -12,12 +12,12 @@ body {
     background-color: var(--background-color);
 }
 a {
-    color: #4b7fc4;
+    color: var(--secondary-color);
     text-decoration: none;
 }
 
 a:hover {
-    color: #3c6cab;
+    color: #e0b800;
     text-decoration: underline;
 }
 .header {
