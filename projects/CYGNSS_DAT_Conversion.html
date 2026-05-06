@@ -32,14 +32,14 @@
 
 <div class="content">
     <h2>Converting DAT Files to CSV</h2>
-    <p>This guide outlines how to use <a href="https://github.com/dji-sdk/datcon" target="_blank" rel="noopener noreferrer">datcon</a> on macOS to convert CYGNSS drone <code>.DAT</code> telemetry files into easy-to-use <code>.CSV</code> files.</p>
+    <p>This guide outlines how to use <a href="https://datfile.net/DatCon/downloads.html" target="_blank" rel="noopener noreferrer">datcon</a> on macOS to convert CYGNSS drone <code>.DAT</code> telemetry files into <code>.CSV</code> files and subsequently visualize them.</p>
     <ol>
-        <li>Install Java if it is not already available on your Mac.</li>
-        <li>Download the latest datcon release and unzip it.</li>
-        <li>Open Terminal and run <code>java -jar DatCon.4.3.0.jar</code>.</li>
-        <li>The tool will create a folder with the resulting CSV files for further analysis.</li>
+        <li>Install Java if it is not already available on your computer.</li>
+        <li>Download datcon 4.3.0, linked here: <a href="https://datfile.net/DatCon/downloads.html" target="_blank" rel="noopener noreferrer">DatCon 4.3.0</a></li>
+        <li>Open Terminal and run <code>java -jar DatCon.4.3.0.jar</code> in the location of the downloaded datcon program.</li>
+        <li>Leave all of the default settings, open the <code>.DAT</code> file you wish to convert, and place it in a new folder.</li>
     </ol>
-    <p>Once you have a CSV file, you can explore the drone's flight data using the <a href="CYGNSS_CSV_Plotter.html">CSV Data Visualizer</a>.</p>
+    <p>Once you have a CSV file, you can process it with the Python scripts in the <a href="https://github.com/benjamenm03/Timestamping/blob/main/README.md" target="_blank" rel="noopener noreferrer">Timestamping repository</a> to add global timestamps and build visualizations.</p>
 </div>
 
 <div class="footer">
