@@ -11,6 +11,15 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: var(--background-color);
 }
+a {
+    color: #4b7fc4;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #3c6cab;
+    text-decoration: underline;
+}
 .header {
     background: var(--primary-color);
     color: var(--text-light);
@@ -76,7 +85,6 @@ body {
     z-index: 1;
 }
 .dropdown-content a {
-    color: var(--primary-color);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -101,12 +109,8 @@ body {
     margin-top: 20px;
 }
 .footer a {
-    color: var(--secondary-color);
     text-decoration: none;
     font-weight: bold;
-}
-.footer a:hover {
-    text-decoration: underline;
 }
 
 
@@ -133,20 +137,11 @@ body {
 }
 
 .resource-cards a {
-    color: var(--primary-color);
     text-decoration: none;
 }
 
 .resource-cards a:hover {
     text-decoration: underline;
-}
-
-.drone-documents .resource-cards a {
-    color: #4b7fc4;
-}
-
-.drone-documents .resource-cards a:hover {
-    color: #3c6cab;
 }
 
 .card-text {
