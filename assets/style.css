@@ -141,6 +141,14 @@ body {
     text-decoration: underline;
 }
 
+.drone-documents .resource-cards a {
+    color: #4b7fc4;
+}
+
+.drone-documents .resource-cards a:hover {
+    color: #3c6cab;
+}
+
 .card-text {
     margin-bottom: 0;
 }
